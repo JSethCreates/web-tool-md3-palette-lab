@@ -27,11 +27,12 @@
     }
     textarea {
       width: 100%;
-      height: 300px; /* reduced from 500px */
+      height: 300px;
       background: #222;
       color: #eee;
       font-family: monospace;
       white-space: pre;
+      margin-bottom: 2em;
     }
   </style>
 </head>
@@ -44,7 +45,13 @@
   <div id="swatches" class="swatch-grid"></div>
   <textarea id="output" readonly></textarea>
 
-  <script>
+  <h2>Material 3 Palette from Google Utilities</h2>
+  <div id="googleSwatches" class="swatch-grid"></div>
+  <textarea id="googleOutput" readonly></textarea>
+
+  <script type="module">
+    import { argbFromHex, hexFromArgb, themeFromSourceColor } from 'https://unpkg.com/@material/material-color-utilities';
+
     function hexToRgb(hex) {
       hex = hex.replace('#', '');
       const bigint = parseInt(hex, 16);
@@ -90,7 +97,7 @@
       );
     }
 
-    function generatePalette() {
+    window.generatePalette = async function generatePalette() {
       const input = document.getElementById('colorInput').value;
       const { r, g, b } = hexToRgb(input);
       const hue = Math.round((Math.atan2(
@@ -160,31 +167,38 @@
         }
       });
 
-      const lines = [
-        `--md-sys-color-primary: ${keys['--md-sys-color-primary']};`,
-        `--md-sys-color-secondary: ${keys['--md-sys-color-secondary']};`,
-        `--md-sys-color-tertiary: ${keys['--md-sys-color-tertiary']};`,
-        ``,
-        `--md-sys-color-on-primary: ${keys['--md-sys-color-on-primary']};`,
-        ``,
-        `--md-sys-color-surface: ${keys['--md-sys-color-surface']};`,
-        `--md-sys-color-surface-container-low: ${keys['--md-sys-color-surface-container-low']};`,
-        `--md-sys-color-surface-container: ${keys['--md-sys-color-surface-container']};`,
-        `--md-sys-color-surface-variant: ${keys['--md-sys-color-surface-variant']};`,
-        `--md-sys-color-surface-container-high: ${keys['--md-sys-color-surface-container-high']};`,
-        ``,
-        `--md-sys-color-neutral: ${keys['--md-sys-color-neutral']};`,
-        `--md-sys-color-outline: ${keys['--md-sys-color-outline']};`,
-        ``,
-        `--md-sys-color-on-surface: ${keys['--md-sys-color-on-surface']};`,
-        `--md-sys-color-neutral-variant: ${keys['--md-sys-color-neutral-variant']};`,
-        ``,
-        `--bg-color: ${keys['--bg-color']};`,
-        `--indicator-bg: ${keys['--indicator-bg']};`,
-        `--transparent-bg: ${keys['--transparent-bg']};`
-      ];
+      output.value = Object.entries(keys).map(([k, v]) => `${k}: ${v};`).join('\n');
 
-      output.value = lines.join('\n');
+      // Google MD3 Palette Below
+      const theme = themeFromSourceColor(argbFromHex(input));
+      const dark = theme.schemes.dark;
+      const googleSwatches = document.getElementById('googleSwatches');
+      const googleOutput = document.getElementById('googleOutput');
+      googleSwatches.innerHTML = '';
+
+      const googleKeys = {
+        '--md-sys-color-primary': hexFromArgb(dark.primary),
+        '--md-sys-color-on-primary': hexFromArgb(dark.onPrimary),
+        '--md-sys-color-secondary': hexFromArgb(dark.secondary),
+        '--md-sys-color-tertiary': hexFromArgb(dark.tertiary),
+        '--md-sys-color-surface': hexFromArgb(dark.surface),
+        '--md-sys-color-on-surface': hexFromArgb(dark.onSurface),
+        '--md-sys-color-outline': hexFromArgb(dark.outline),
+        '--md-sys-color-surface-variant': hexFromArgb(dark.surfaceVariant)
+      };
+
+      Object.entries(googleKeys).forEach(([key, val]) => {
+        const div = document.createElement('div');
+        div.className = 'swatch';
+        div.style.background = val;
+        const { r, g, b } = hexToRgb(val);
+        const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+        div.style.color = brightness > 140 ? 'black' : 'white';
+        div.textContent = `${key}: ${val}`;
+        googleSwatches.appendChild(div);
+      });
+
+      googleOutput.value = Object.entries(googleKeys).map(([k, v]) => `${k}: ${v};`).join('\n');
     }
   </script>
 </body>
