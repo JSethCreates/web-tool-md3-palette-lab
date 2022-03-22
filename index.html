@@ -105,31 +105,34 @@
         2 * r - g - b
       ) * 180 / Math.PI + 360) % 360);
 
+      // Generate HCT-based colors
       const primary = generateHCT(hue, 48, 40);
       const secondary = generateHCT(hue, 16, 40);
       const tertiary = generateHCT((hue + 60) % 360, 24, 40);
       const neutral = generateHCT(hue, 4, 40);
       const neutralVariant = generateHCT(hue, 8, 40);
 
+      // Assemble the key/value map
       const keys = {
         '--md-sys-color-primary': primary,
-        '--md-sys-color-on-primary': '#FFFFFF',
         '--md-sys-color-secondary': secondary,
-        '--md-sys-color-neutral': neutral,
         '--md-sys-color-tertiary': tertiary,
-        '--md-sys-color-outline': neutral,
+        '--md-sys-color-on-primary': '#FFFFFF',
         '--md-sys-color-surface': adjustLightness(primary, 0.85),
-        '--md-sys-color-on-surface': neutralVariant,
         '--md-sys-color-surface-container-low': adjustLightness(primary, 0.70),
-        '--md-sys-color-neutral-variant': neutralVariant,
         '--md-sys-color-surface-container': adjustLightness(primary, 0.55),
-        '--bg-color': '#18181849',
-        '--md-sys-color-surface-container-high': adjustLightness(primary, 0.40),
-        '--indicator-bg': '#10101094',
         '--md-sys-color-surface-variant': adjustLightness(primary, 0.55),
+        '--md-sys-color-surface-container-high': adjustLightness(primary, 0.40),
+        '--md-sys-color-neutral': neutral,
+        '--md-sys-color-outline': neutral,
+        '--md-sys-color-on-surface': neutralVariant,
+        '--md-sys-color-neutral-variant': neutralVariant,
+        '--bg-color': '#18181849',
+        '--indicator-bg': '#10101094',
         '--transparent-bg': '#10101000'
       };
 
+      // Render swatches grid
       const pairedKeys = [
         ['--md-sys-color-primary', '--md-sys-color-on-primary'],
         ['--md-sys-color-secondary', '--md-sys-color-neutral'],
@@ -143,10 +146,7 @@
       ];
 
       const swatches = document.getElementById('swatches');
-      const output = document.getElementById('output');
       swatches.innerHTML = '';
-      output.value = '';
-
       pairedKeys.forEach(pair => {
         if (pair.length === 0) {
           const gap = document.createElement('div');
@@ -167,7 +167,35 @@
         }
       });
 
-      output.value = Object.entries(keys).map(([k, v]) => `${k}: ${v};`).join('\n');
+      // Build the ordered output with specified spacing
+      const orderedKeys = [
+        '--md-sys-color-primary',
+        '--md-sys-color-secondary',
+        '--md-sys-color-tertiary',
+        '', // blank line
+        '--md-sys-color-on-primary',
+        '', // blank line
+        '--md-sys-color-surface',
+        '--md-sys-color-surface-container-low',
+        '--md-sys-color-surface-container',
+        '--md-sys-color-surface-variant',
+        '--md-sys-color-surface-container-high',
+        '', // blank line
+        '--md-sys-color-neutral',
+        '--md-sys-color-outline',
+        '', // blank line
+        '--md-sys-color-on-surface',
+        '--md-sys-color-neutral-variant',
+        '', // blank line
+        '--bg-color',
+        '--indicator-bg',
+        '--transparent-bg'
+      ];
+
+      const output = document.getElementById('output');
+      output.value = orderedKeys
+        .map(key => key ? `${key}: ${keys[key]};` : '')
+        .join('\n');
 
       // Google MD3 Palette Below
       const theme = themeFromSourceColor(argbFromHex(input));
@@ -198,8 +226,10 @@
         googleSwatches.appendChild(div);
       });
 
-      googleOutput.value = Object.entries(googleKeys).map(([k, v]) => `${k}: ${v};`).join('\n');
-    }
+      googleOutput.value = Object.entries(googleKeys)
+        .map(([k, v]) => `${k}: ${v};`)
+        .join('\n');
+    };
   </script>
 </body>
 </html>
