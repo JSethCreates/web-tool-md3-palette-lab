@@ -111,6 +111,7 @@
       const tertiary = generateHCT((hue + 60) % 360, 24, 40);
       const neutral = generateHCT(hue, 4, 40);
       const neutralVariant = generateHCT(hue, 8, 40);
+      const darkerNeutralVariant = generateHCT(hue, 8, 15); // darker version
 
       // Assemble the key/value map
       const keys = {
@@ -125,7 +126,7 @@
         '--md-sys-color-surface-container-high': adjustLightness(primary, 0.40),
         '--md-sys-color-neutral': neutral,
         '--md-sys-color-outline': neutral,
-        '--md-sys-color-on-surface': neutralVariant,
+        '--md-sys-color-on-surface': darkerNeutralVariant,
         '--md-sys-color-neutral-variant': neutralVariant,
         '--bg-color': '#18181849',
         '--indicator-bg': '#10101094',
