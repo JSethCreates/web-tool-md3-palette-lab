@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MD3 Theme Generator via HCT</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MD3 Theme Generator via HCT &amp; Google Light Scheme</title>
   <style>
     body { font-family: sans-serif; background: #111; color: #eee; padding: 2em; }
     input, button { margin-bottom: 1em; display: block; }
@@ -37,21 +37,30 @@
   </style>
 </head>
 <body>
-  <h1>Custom HCT-Based Palette Generator</h1>
+  <h1>Custom HCT &amp; Google MD3 Light Palette Generator</h1>
+
   <label for="colorInput">Choose Base Color:</label>
-  <input type="color" id="colorInput" value="#6750A4">
+  <input type="color" id="colorInput" value="#6750A4" />
   <button onclick="generatePalette()">Generate</button>
 
+  <!-- HCT‐Generated Palettes -->
+  <h2>HCT‐Based Palette</h2>
   <div id="swatches" class="swatch-grid"></div>
   <textarea id="output" readonly></textarea>
 
-  <h2>Material 3 Palette from Google Utilities</h2>
+  <!-- Google‐Generated Palettes (Light Scheme) -->
+  <h2>Google MD3 “Light” Scheme Palette</h2>
   <div id="googleSwatches" class="swatch-grid"></div>
   <textarea id="googleOutput" readonly></textarea>
 
   <script type="module">
-    import { argbFromHex, hexFromArgb, themeFromSourceColor } from 'https://unpkg.com/@material/material-color-utilities';
+    import {
+      argbFromHex,
+      hexFromArgb,
+      themeFromSourceColor
+    } from 'https://unpkg.com/@material/material-color-utilities@0.3.0';
 
+    // Utility: Convert hex to {r,g,b}
     function hexToRgb(hex) {
       hex = hex.replace('#', '');
       const bigint = parseInt(hex, 16);
@@ -62,10 +71,17 @@
       };
     }
 
+    // Utility: Convert {r,g,b} to hex string
     function rgbToHex(r, g, b) {
-      return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+      return (
+        '#' +
+        [r, g, b]
+          .map((x) => x.toString(16).padStart(2, '0'))
+          .join('')
+      );
     }
 
+    // Lighten/darken via simple interpolation toward white
     function adjustLightness(hex, percent) {
       const { r, g, b } = hexToRgb(hex);
       const newR = Math.min(255, Math.floor(r + (255 - r) * percent));
@@ -74,6 +90,7 @@
       return rgbToHex(newR, newG, newB);
     }
 
+    // Generate a rough HCT color at (hue, chroma, tone)
     function generateHCT(baseHue, chroma, tone) {
       const h = baseHue;
       const s = Math.min(chroma / 100, 1);
@@ -81,7 +98,9 @@
       const c1 = (1 - Math.abs(2 * lPct - 1)) * s;
       const x = c1 * (1 - Math.abs((h / 60) % 2 - 1));
       const m = lPct - c1 / 2;
-      let r1 = 0, g1 = 0, b1 = 0;
+      let r1 = 0,
+        g1 = 0,
+        b1 = 0;
 
       if (h < 60) [r1, g1, b1] = [c1, x, 0];
       else if (h < 120) [r1, g1, b1] = [x, c1, 0];
@@ -97,24 +116,30 @@
       );
     }
 
-    window.generatePalette = async function generatePalette() {
+    window.generatePalette = function generatePalette() {
       const input = document.getElementById('colorInput').value;
       const { r, g, b } = hexToRgb(input);
-      const hue = Math.round((Math.atan2(
-        Math.sqrt(3) * (g - b),
-        2 * r - g - b
-      ) * 180 / Math.PI + 360) % 360);
+      // Compute approximate hue via RGB → HCT hue formula
+      const hue = Math.round(
+        ((Math.atan2(
+          Math.sqrt(3) * (g - b),
+          2 * r - g - b
+        ) *
+          180) /
+          Math.PI +
+          360) %
+          360
+      );
 
-      // Generate HCT-based colors
+      // ==== HCT‐BASED KEYS ====
       const primary = generateHCT(hue, 48, 40);
       const secondary = generateHCT(hue, 16, 40);
       const tertiary = generateHCT((hue + 60) % 360, 24, 40);
       const neutral = generateHCT(hue, 4, 40);
       const neutralVariant = generateHCT(hue, 8, 40);
-      const darkerNeutralVariant = generateHCT(hue, 8, 15); // darker version
+      const darkerNeutralVariant = generateHCT(hue, 8, 15);
 
-      // Assemble the key/value map
-      const keys = {
+      const hctKeys = {
         '--md-sys-color-primary': primary,
         '--md-sys-color-secondary': secondary,
         '--md-sys-color-tertiary': tertiary,
@@ -133,7 +158,7 @@
         '--transparent-bg': '#10101000'
       };
 
-      // Render swatches grid
+      // Define exactly the same “paired + gaps” structure as for HCT:
       const pairedKeys = [
         ['--md-sys-color-primary', '--md-sys-color-on-primary'],
         ['--md-sys-color-secondary', '--md-sys-color-neutral'],
@@ -146,16 +171,17 @@
         ['--md-sys-color-surface-variant', '--transparent-bg']
       ];
 
+      // Render HCT swatches
       const swatches = document.getElementById('swatches');
       swatches.innerHTML = '';
-      pairedKeys.forEach(pair => {
+      pairedKeys.forEach((pair) => {
         if (pair.length === 0) {
           const gap = document.createElement('div');
           gap.className = 'gap';
           swatches.appendChild(gap);
         } else {
-          pair.forEach(key => {
-            const val = keys[key];
+          pair.forEach((key) => {
+            const val = hctKeys[key];
             const div = document.createElement('div');
             div.className = 'swatch';
             div.style.background = val;
@@ -168,67 +194,107 @@
         }
       });
 
-      // Build the ordered output with specified spacing
+      // Build HCT textarea output in the same order split by blank lines
       const orderedKeys = [
         '--md-sys-color-primary',
         '--md-sys-color-secondary',
         '--md-sys-color-tertiary',
-        '', // blank line
+        '',
         '--md-sys-color-on-primary',
-        '', // blank line
+        '',
         '--md-sys-color-surface',
         '--md-sys-color-surface-container-low',
         '--md-sys-color-surface-container',
         '--md-sys-color-surface-variant',
         '--md-sys-color-surface-container-high',
-        '', // blank line
+        '',
         '--md-sys-color-neutral',
         '--md-sys-color-outline',
-        '', // blank line
+        '',
         '--md-sys-color-on-surface',
         '--md-sys-color-neutral-variant',
-        '', // blank line
+        '',
         '--bg-color',
         '--indicator-bg',
         '--transparent-bg'
       ];
 
-      const output = document.getElementById('output');
-      output.value = orderedKeys
-        .map(key => key ? `${key}: ${keys[key]};` : '')
+      document.getElementById('output').value = orderedKeys
+        .map((k) => (k ? `${k}: ${hctKeys[k]};` : ''))
         .join('\n');
 
-      // Google MD3 Palette Below
+      // ==== GOOGLE “LIGHT” SCHEME KEYS ====
       const theme = themeFromSourceColor(argbFromHex(input));
-      const dark = theme.schemes.dark;
-      const googleSwatches = document.getElementById('googleSwatches');
-      const googleOutput = document.getElementById('googleOutput');
-      googleSwatches.innerHTML = '';
+      const light = theme.schemes.light;
 
+      // Map every HCT key to its Google‐scheme equivalent using the light scheme
       const googleKeys = {
-        '--md-sys-color-primary': hexFromArgb(dark.primary),
-        '--md-sys-color-on-primary': hexFromArgb(dark.onPrimary),
-        '--md-sys-color-secondary': hexFromArgb(dark.secondary),
-        '--md-sys-color-tertiary': hexFromArgb(dark.tertiary),
-        '--md-sys-color-surface': hexFromArgb(dark.surface),
-        '--md-sys-color-on-surface': hexFromArgb(dark.onSurface),
-        '--md-sys-color-outline': hexFromArgb(dark.outline),
-        '--md-sys-color-surface-variant': hexFromArgb(dark.surfaceVariant)
+        '--md-sys-color-primary': hexFromArgb(light.primary),
+        '--md-sys-color-secondary': hexFromArgb(light.secondary),
+        '--md-sys-color-tertiary': hexFromArgb(light.tertiary),
+        '--md-sys-color-on-primary': hexFromArgb(light.onPrimary),
+        '--md-sys-color-surface': hexFromArgb(light.surface),
+        '--md-sys-color-surface-container-low': hexFromArgb(
+          light.surfaceContainerLow !== undefined
+            ? light.surfaceContainerLow
+            : light.surfaceContainer
+        ),
+        '--md-sys-color-surface-container': hexFromArgb(
+          light.surfaceContainer !== undefined
+            ? light.surfaceContainer
+            : light.surfaceVariant
+        ),
+        '--md-sys-color-surface-variant': hexFromArgb(light.surfaceVariant),
+        '--md-sys-color-surface-container-high': hexFromArgb(
+          light.surfaceContainerHigh !== undefined
+            ? light.surfaceContainerHigh
+            : light.surfaceVariant
+        ),
+        '--md-sys-color-neutral': hexFromArgb(
+          light.neutral !== undefined ? light.neutral : light.surfaceVariant
+        ),
+        '--md-sys-color-outline': hexFromArgb(light.outline),
+        '--md-sys-color-on-surface': hexFromArgb(light.onSurface),
+        '--md-sys-color-neutral-variant': hexFromArgb(
+          light.neutralVariant !== undefined
+            ? light.neutralVariant
+            : light.surfaceVariant
+        ),
+        '--bg-color': hexFromArgb(light.background),
+        '--indicator-bg': hexFromArgb(
+          light.inverseSurface !== undefined
+            ? light.inverseSurface
+            : light.onSurface
+        ),
+        '--transparent-bg': '#00000000'
       };
 
-      Object.entries(googleKeys).forEach(([key, val]) => {
-        const div = document.createElement('div');
-        div.className = 'swatch';
-        div.style.background = val;
-        const { r, g, b } = hexToRgb(val);
-        const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
-        div.style.color = brightness > 140 ? 'black' : 'white';
-        div.textContent = `${key}: ${val}`;
-        googleSwatches.appendChild(div);
+      // Render Google swatches in *exactly the same paired/gap layout*
+      const googleSwatches = document.getElementById('googleSwatches');
+      googleSwatches.innerHTML = '';
+      pairedKeys.forEach((pair) => {
+        if (pair.length === 0) {
+          const gap = document.createElement('div');
+          gap.className = 'gap';
+          googleSwatches.appendChild(gap);
+        } else {
+          pair.forEach((key) => {
+            const val = googleKeys[key];
+            const div = document.createElement('div');
+            div.className = 'swatch';
+            div.style.background = val;
+            const { r, g, b } = hexToRgb(val);
+            const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+            div.style.color = brightness > 140 ? 'black' : 'white';
+            div.textContent = `${key}: ${val}`;
+            googleSwatches.appendChild(div);
+          });
+        }
       });
 
-      googleOutput.value = Object.entries(googleKeys)
-        .map(([k, v]) => `${k}: ${v};`)
+      // Build Google textarea output *in the same order* as HCT
+      document.getElementById('googleOutput').value = orderedKeys
+        .map((k) => (k ? `${k}: ${googleKeys[k]};` : ''))
         .join('\n');
     };
   </script>
