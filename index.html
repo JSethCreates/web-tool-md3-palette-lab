@@ -10,13 +10,11 @@
       --bg-color: #121212;
       --card-bg: #1e1e1e;
       --text-color: #e0e0e0;
-      --accent-color: #6750A4;
       --border-color: #444;
-      --gap-size: 2rem;
       --input-bg: #2a2a2a;
       --input-border: #555;
-      --button-bg: #6750A4;
-      --button-hover: #5a47a0;
+      --button-default-bg: #333;
+      --button-default-hover: #444;
     }
 
     /* ====== GLOBAL STYLES ====== */
@@ -35,7 +33,7 @@
       font-size: 1.8rem;
       margin-bottom: 1.5rem;
       text-align: center;
-      color: var(--accent-color);
+      color: var(--text-color);
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     }
     /* ====== INPUT ROW ====== */
@@ -69,27 +67,26 @@
     .input-row button {
       padding: 0.6rem 1.2rem;
       font-size: 1rem;
-      background: var(--button-bg);
-      color: #fff;
+      background: var(--button-default-bg);
+      color: var(--text-color);
       border: none;
       border-radius: 4px;
       cursor: pointer;
       transition: background 0.2s ease;
     }
     .input-row button:hover {
-      background: var(--button-hover);
+      background: var(--button-default-hover);
     }
 
     /* ====== PALETTE CONTAINER ====== */
     .palette-container {
       display: flex;
-      gap: var(--gap-size);
+      gap: 2rem;
       align-items: flex-start;
       justify-content: center;
       flex-wrap: wrap;
     }
     .section {
-      position: relative;
       flex: 1;
       min-width: 280px;
       background-color: var(--card-bg);
@@ -98,15 +95,6 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-    }
-    .section:not(:last-child)::after {
-      content: "";
-      position: absolute;
-      top: 10%;
-      bottom: 10%;
-      right: 0;
-      width: 2px;
-      background-color: var(--accent-color);
     }
     .section-content {
       padding: 1rem;
@@ -117,8 +105,144 @@
     .section h2 {
       font-size: 1.2rem;
       margin-bottom: 1rem;
-      color: var(--accent-color);
+      color: var(--text-color);
       text-align: center;
+      position: relative;
+    }
+
+    /* ====== INFO ICON ====== */
+    .info-icon {
+      display: inline-block;
+      margin-left: 0.3rem;
+      color: var(--text-color);
+      cursor: help;
+      font-weight: bold;
+      position: relative;
+    }
+    .info-icon::after {
+      content: 'ℹ';
+      font-size: 1rem;
+      vertical-align: middle;
+    }
+    .info-icon .tooltip {
+      visibility: hidden;
+      width: 120px;
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      text-align: center;
+      border-radius: 4px;
+      padding: 0.5rem;
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 1;
+      font-size: 0.8rem;
+      line-height: 1.2;
+    }
+    .info-icon:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* ====== EXAMPLE CARD ====== */
+    .example-card {
+      background: var(--md-sys-color-surface-container, #2a2a2a);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ====== UI EXAMPLE ELEMENTS ====== */
+    .btn-primary {
+      background: var(--md-sys-color-primary, #444);
+      color: var(--md-sys-color-on-primary, #fff);
+      border: none;
+      border-radius: 4px;
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: transform 0.1s ease, filter 0.2s ease;
+    }
+    .btn-primary:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+    .btn-secondary-solid {
+      background: var(--md-sys-color-tertiary, #555);
+      color: var(--md-sys-color-on-primary, #fff);
+      border: none;
+      border-radius: 999px;
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: transform 0.1s ease, filter 0.2s ease;
+    }
+    .btn-secondary-solid:hover {
+      filter: brightness(1.15);
+      transform: translateY(-1px);
+    }
+    .btn-secondary-outlined {
+      background: transparent;
+      color: var(--md-sys-color-tertiary, #888);
+      border: 2px solid var(--md-sys-color-tertiary, #888);
+      border-radius: 999px;
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: transform 0.1s ease, background 0.2s ease;
+    }
+    .btn-secondary-outlined:hover {
+      transform: translateY(-1px);
+      background: var(--md-sys-color-surface-variant, rgba(255, 255, 255, 0.05));
+    }
+    .btn-text {
+      background: transparent;
+      color: var(--md-sys-color-tertiary, #888);
+      border: none;
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: transform 0.1s ease, background 0.2s ease;
+      border-radius: 4px;
+    }
+    .btn-text:hover {
+      transform: translateY(-1px);
+      background: var(--md-sys-color-surface-variant, rgba(255, 255, 255, 0.05));
+    }
+    .checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-right: 0.5rem;
+    }
+    .checkbox-wrapper input[type="checkbox"] {
+      width: 1.2rem;
+      height: 1.2rem;
+      accent-color: var(--md-sys-color-primary, #fff);
+      cursor: pointer;
+    }
+    .checkbox-wrapper label {
+      color: var(--md-sys-color-on-surface, #ccc);
+      font-size: 0.9rem;
+    }
+    .text-input {
+      background: var(--md-sys-color-surface, #333);
+      border: 1px solid var(--md-sys-color-outline, #555);
+      color: var(--md-sys-color-on-surface, #eee);
+      border-radius: 4px;
+      padding: 0.5rem;
+      font-size: 0.9rem;
+      width: 100%;
+      max-width: 200px;
+      outline: none;
     }
 
     /* ====== SWATCH GRID ====== */
@@ -178,27 +302,75 @@
 
   <div class="palette-container">
     <!-- Custom HCT Section -->
-    <div class="section">
+    <div class="section custom">
       <div class="section-content">
-        <h2>Custom HCT Palette</h2>
+        <h2>
+          Custom HCT Palette
+          <span class="info-icon">
+            <span class="tooltip">Lorem ipsum dolor sit amet</span>
+          </span>
+        </h2>
+        <div class="example-card">
+          <button class="btn-primary">Play</button>
+          <button class="btn-secondary-solid">Pause</button>
+          <button class="btn-secondary-outlined">Stop</button>
+          <button class="btn-text">More Info</button>
+          <div class="checkbox-wrapper">
+            <input type="checkbox" id="chk-hct" />
+            <label for="chk-hct">Enable Feature</label>
+          </div>
+          <input type="text" class="text-input" placeholder="Type here..." />
+        </div>
         <div id="swatches" class="swatch-grid"></div>
         <textarea id="output" readonly></textarea>
       </div>
     </div>
 
     <!-- Google Light Scheme Section -->
-    <div class="section">
+    <div class="section light">
       <div class="section-content">
-        <h2>Google MD3 “Light” Palette</h2>
+        <h2>
+          Google MD3 “Light” Palette
+          <span class="info-icon">
+            <span class="tooltip">Lorem ipsum dolor sit amet</span>
+          </span>
+        </h2>
+        <div class="example-card">
+          <button class="btn-primary">Play</button>
+          <button class="btn-secondary-solid">Pause</button>
+          <button class="btn-secondary-outlined">Stop</button>
+          <button class="btn-text">More Info</button>
+          <div class="checkbox-wrapper">
+            <input type="checkbox" id="chk-light" />
+            <label for="chk-light">Enable Feature</label>
+          </div>
+          <input type="text" class="text-input" placeholder="Type here..." />
+        </div>
         <div id="lightSwatches" class="swatch-grid"></div>
         <textarea id="lightOutput" readonly></textarea>
       </div>
     </div>
 
     <!-- Google Dark Scheme Section -->
-    <div class="section">
+    <div class="section dark">
       <div class="section-content">
-        <h2>Google MD3 “Dark” Palette</h2>
+        <h2>
+          Google MD3 “Dark” Palette
+          <span class="info-icon">
+            <span class="tooltip">Lorem ipsum dolor sit amet</span>
+          </span>
+        </h2>
+        <div class="example-card">
+          <button class="btn-primary">Play</button>
+          <button class="btn-secondary-solid">Pause</button>
+          <button class="btn-secondary-outlined">Stop</button>
+          <button class="btn-text">More Info</button>
+          <div class="checkbox-wrapper">
+            <input type="checkbox" id="chk-dark" />
+            <label for="chk-dark">Enable Feature</label>
+          </div>
+          <input type="text" class="text-input" placeholder="Type here..." />
+        </div>
         <div id="darkSwatches" class="swatch-grid"></div>
         <textarea id="darkOutput" readonly></textarea>
       </div>
@@ -446,6 +618,20 @@
         ),
         '--transparent-bg': '#00000000'
       };
+
+      // Apply CSS variables into each section
+      const customSection = document.querySelector('.section.custom');
+      Object.entries(hctKeys).forEach(([key, val]) => {
+        customSection.style.setProperty(key, val);
+      });
+      const lightSection = document.querySelector('.section.light');
+      Object.entries(lightKeys).forEach(([key, val]) => {
+        lightSection.style.setProperty(key, val);
+      });
+      const darkSection = document.querySelector('.section.dark');
+      Object.entries(darkKeys).forEach(([key, val]) => {
+        darkSection.style.setProperty(key, val);
+      });
 
       // Helper: render swatches into a container
       function renderSwatches(keysMap, containerId) {
