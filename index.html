@@ -208,7 +208,7 @@
     }
     .btn-secondary-outlined:hover {
       transform: translateY(-1px);
-      background: var(--md-sys-color-surface-variant, rgba(255, 255, 255, 0.05));
+      background: var(--md-sys-color-tertiary-container, rgba(255, 255, 255, 0.05));
     }
     .btn-text {
       background: transparent;
@@ -222,7 +222,7 @@
     }
     .btn-text:hover {
       transform: translateY(-1px);
-      background: var(--md-sys-color-surface-variant, rgba(255, 255, 255, 0.05));
+      background: var(--md-sys-color-tertiary-container, rgba(255, 255, 255, 0.05));
     }
     .checkbox-wrapper {
       display: flex;
@@ -294,6 +294,56 @@
       padding: 0.8rem;
       flex: none;
     }
+	
+	/* CARD BACKGROUNDS */
+	.section.custom .example-card,
+	.section.light .example-card,
+	.section.dark .example-card {
+	  background: var(--md-sys-color-primary-container);
+	  border-radius: 8px;
+	  padding: 1rem;
+	  margin-bottom: 1rem;
+	  display: flex;
+	  flex-wrap: wrap;
+	  gap: 0.75rem;
+	  justify-content: center;
+	  align-items: center;
+	}
+
+	/* TEXT INPUTS */
+	.section.custom .text-input,
+	.section.light .text-input,
+	.section.dark .text-input {
+	  background: var(--md-sys-color-surface);
+	  border: 1px solid var(--md-sys-color-outline);
+	  color: var(--md-sys-color-on-surface);
+	  border-radius: 4px;
+	  padding: 0.5rem;
+	  font-size: 0.9rem;
+	  width: 100%;
+	  max-width: 200px;
+	  outline: none;
+	}
+
+	/* TEXTAREAS */
+	.section.custom textarea,
+	.section.light textarea,
+	.section.dark textarea {
+	  background: var(--md-sys-color-surface);
+	  color: var(--md-sys-color-on-surface);
+	  font-family: monospace;
+	  font-size: 0.9rem;
+	  white-space: pre;
+	  resize: vertical;
+	  border: 1px solid var(--md-sys-color-outline);
+	  border-radius: 4px;
+	  padding: 0.8rem;
+	  height: 420px;
+	  width: 100%;
+	  flex: none;
+	}
+	
+	
   </style>
 </head>
 <body>
@@ -501,15 +551,15 @@ window.generatePalette = function generatePalette() {
     '--md-sys-color-tertiary': tertiary,
     '--md-sys-color-on-primary': '#FFFFFF',
     '--md-sys-color-surface': adjustLightness(primary, 0.85),
-    '--md-sys-color-surface-container-low': adjustLightness(primary, 0.70),
-    '--md-sys-color-surface-container': adjustLightness(primary, 0.55),
-    '--md-sys-color-surface-variant': adjustLightness(tertiary, 0.55),
-    '--md-sys-color-surface-container-high': adjustLightness(primary, 0.40),
+    '--md-sys-color-primary-container': adjustLightness(primary, 0.55),
+    '--md-sys-color-secondary-container': adjustLightness(primary, 0.70),
+    '--md-sys-color-tertiary-container': adjustLightness(tertiary, 0.55),
+    '--md-sys-color-on-primary-container': adjustLightness(primary, 0.40),
     '--md-sys-color-neutral': neutral,
     '--md-sys-color-outline': neutral,
     '--md-sys-color-on-surface': darkerNeutralVariant,
     '--md-sys-color-neutral-variant': neutralVariant,
-    '--bg-color': '#18181849',
+    '--bg-color': '#181818',
     '--indicator-bg': '#10101094',
     '--transparent-bg': '#10101000'
   };
@@ -520,37 +570,44 @@ window.generatePalette = function generatePalette() {
     ['--md-sys-color-tertiary', '--md-sys-color-outline'],
     [],
     ['--md-sys-color-surface', '--md-sys-color-on-surface'],
-    ['--md-sys-color-surface-container-low', '--md-sys-color-neutral-variant'],
-    ['--md-sys-color-surface-container', '--bg-color'],
-    ['--md-sys-color-surface-container-high', '--indicator-bg'],
-    ['--md-sys-color-surface-variant', '--transparent-bg']
+    ['--md-sys-color-secondary-container', '--md-sys-color-neutral-variant'],
+    ['--md-sys-color-primary-container', '--bg-color'],
+    ['--md-sys-color-on-primary-container', '--indicator-bg'],
+    ['--md-sys-color-tertiary-container', '--transparent-bg']
   ];
 
-  const orderedKeys = [
-    '--md-sys-color-primary',
-    '--md-sys-color-secondary',
-    '--md-sys-color-tertiary',
-    '',
-    '--md-sys-color-on-primary',
-    '',
-    '--md-sys-color-surface',
-    '--md-sys-color-surface-container-low',
-    '--md-sys-color-surface-container',
-    '--md-sys-color-surface-variant',
-    '--md-sys-color-surface-container-high',
-    '',
-    '--md-sys-color-neutral',
-    '--md-sys-color-outline',
-    '',
-    '--md-sys-color-on-surface',
-    '--md-sys-color-neutral-variant',
-    '',
-    '--bg-color',
-    '--indicator-bg',
-    '--transparent-bg'
-  ];
+	const orderedKeys = [
+	  '--md-sys-color-primary',
+	  '--md-sys-color-secondary',
+	  '--md-sys-color-tertiary',
+	  '',
 
-  const theme = themeFromSourceColor(argbFromHex(input));
+	  '--md-sys-color-on-primary',
+	  '--md-sys-color-primary-container',
+	  '--md-sys-color-on-primary-container',
+	  '',
+
+	  '--md-sys-color-surface',
+	  '--md-sys-color-on-surface',
+	  '',
+
+	  '--md-sys-color-outline',
+	  '',
+
+	  '--md-sys-color-secondary-container',
+	  '--md-sys-color-tertiary-container',
+	  '--md-sys-color-neutral',
+	  '--md-sys-color-neutral-variant',
+	  '',
+
+	  '--indicator-bg',
+	  '--transparent-bg',
+	  '--bg-color'
+	];
+
+  const vividSeedHex = generateHCT(hue, 70, 70); // or chroma: 60, tone: 50
+  const theme = themeFromSourceColor(argbFromHex(vividSeedHex));
+  
   const light = theme.schemes.light;
   const dark = theme.schemes.dark;
 
@@ -560,16 +617,16 @@ window.generatePalette = function generatePalette() {
     '--md-sys-color-tertiary': hexFromArgb(light.tertiary),
     '--md-sys-color-on-primary': hexFromArgb(light.onPrimary),
     '--md-sys-color-surface': hexFromArgb(light.surface),
-    '--md-sys-color-surface-container-low': hexFromArgb(light.surfaceContainerLow ?? light.surfaceContainer),
-    '--md-sys-color-surface-container': hexFromArgb(light.surfaceContainer ?? light.surfaceVariant),
-    '--md-sys-color-surface-variant': hexFromArgb(light.surfaceVariant),
-    '--md-sys-color-surface-container-high': hexFromArgb(light.surfaceContainerHigh ?? light.surfaceVariant),
-    '--md-sys-color-neutral': hexFromArgb(light.neutral ?? light.surfaceVariant),
+    '--md-sys-color-primary-container': hexFromArgb(light.primaryContainer),
+    '--md-sys-color-secondary-container': hexFromArgb(light.secondaryContainer),
+    '--md-sys-color-tertiary-container': hexFromArgb(light.tertiaryContainer),
+    '--md-sys-color-on-primary-container': hexFromArgb(light.onPrimaryContainer),
+    '--md-sys-color-neutral': hexFromArgb(light.neutral),
     '--md-sys-color-outline': hexFromArgb(light.outline),
     '--md-sys-color-on-surface': hexFromArgb(light.onSurface),
-    '--md-sys-color-neutral-variant': hexFromArgb(light.neutralVariant ?? light.surfaceVariant),
+    '--md-sys-color-neutral-variant': hexFromArgb(light.neutralVariant),
     '--bg-color': hexFromArgb(light.background),
-    '--indicator-bg': hexFromArgb(light.inverseSurface ?? light.onSurface),
+    '--indicator-bg': hexFromArgb(light.inverseSurface),
     '--transparent-bg': '#00000000'
   };
 
@@ -579,16 +636,16 @@ window.generatePalette = function generatePalette() {
     '--md-sys-color-tertiary': hexFromArgb(dark.tertiary),
     '--md-sys-color-on-primary': hexFromArgb(dark.onPrimary),
     '--md-sys-color-surface': hexFromArgb(dark.surface),
-    '--md-sys-color-surface-container-low': hexFromArgb(dark.surfaceContainerLow ?? dark.surfaceContainer),
-    '--md-sys-color-surface-container': hexFromArgb(dark.surfaceContainer ?? dark.surfaceVariant),
-    '--md-sys-color-surface-variant': hexFromArgb(dark.surfaceVariant),
-    '--md-sys-color-surface-container-high': hexFromArgb(dark.surfaceContainerHigh ?? dark.surfaceVariant),
-    '--md-sys-color-neutral': hexFromArgb(dark.neutral ?? dark.surfaceVariant),
+    '--md-sys-color-primary-container': hexFromArgb(dark.primaryContainer),
+    '--md-sys-color-secondary-container': hexFromArgb(dark.secondaryContainer),
+    '--md-sys-color-tertiary-container': hexFromArgb(dark.tertiaryContainer),
+    '--md-sys-color-on-primary-container': hexFromArgb(dark.onPrimaryContainer),
+    '--md-sys-color-neutral': hexFromArgb(dark.neutral),
     '--md-sys-color-outline': hexFromArgb(dark.outline),
     '--md-sys-color-on-surface': hexFromArgb(dark.onSurface),
-    '--md-sys-color-neutral-variant': hexFromArgb(dark.neutralVariant ?? dark.surfaceVariant),
+    '--md-sys-color-neutral-variant': hexFromArgb(dark.neutralVariant),
     '--bg-color': hexFromArgb(dark.background),
-    '--indicator-bg': hexFromArgb(dark.inverseSurface ?? dark.onSurface),
+    '--indicator-bg': hexFromArgb(dark.inverseSurface),
     '--transparent-bg': '#00000000'
   };
 
@@ -624,10 +681,10 @@ window.generatePalette = function generatePalette() {
   }
 
   function buildOutput(keysMap, textareaId) {
-	  const lines = orderedKeys.map((k) => (k ? `${k}: ${keysMap[k]};` : ''));
-	  const wrapped = [':root {', ...lines, '}'].join('\n');
-	  document.getElementById(textareaId).value = wrapped;
-	}
+    const lines = orderedKeys.map((k) => (k ? `${k}: ${keysMap[k]};` : ''));
+    const wrapped = [':root {', ...lines, '}'].join('\n');
+    document.getElementById(textareaId).value = wrapped;
+  }
 
   renderSwatches(hctKeys, 'swatches');
   buildOutput(hctKeys, 'output');
@@ -638,6 +695,8 @@ window.generatePalette = function generatePalette() {
   renderSwatches(darkKeys, 'darkSwatches');
   buildOutput(darkKeys, 'darkOutput');
 };
+
+
   </script>
 </body>
 </html>
