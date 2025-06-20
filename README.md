@@ -3,7 +3,8 @@
 A one-page tool for generating and fine-tuning color palettes in Google's Material Design 3 (MD3) system.
 
 
-![MD3 Palette Tool Screenshot](/assets/demo.png)
+![MD3 Palette Tool Screenshot](https://raw.githubusercontent.com/JSethCreates/web-tool-md3-palette-lab/main/assets/demo.png)
+
 ---
 
 ## 🎨 Purpose
