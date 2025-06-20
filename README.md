@@ -1,4 +1,4 @@
-# MD3 Palette Tool
+# MD3 Palette Comparator
 
 A one-page tool for generating and fine-tuning color palettes in Google's Material Design 3 (MD3) system.
 
