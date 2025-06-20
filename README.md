@@ -13,7 +13,7 @@ This tool allows you to explore and compare how MD3 color logic behaves when gen
 
 ---
 
-## 🔍 Color Generation Logic
+## 🔍 HCT Color Generation - Local Logic
 
 ### Primary
 Generated using the seed hue with **high chroma (e.g. 48)** and a **mid-dark tone (e.g. 40)**. This produces a vivid, deep version of the base color.
@@ -34,7 +34,7 @@ These serve as grayish supporting tones.
 
 ---
 
-## 🧠 Google's Material Color Utilities (MCU)
+## 🧠 Google's Light and Dark Color Generation - Material Color Utilities (MCU)
 
 Google's MCU uses your source ARGB color to generate a full **101-tone HCT palette** for that hue (tones 0–100). This tonal palette:
 - Maintains **consistent hue**
