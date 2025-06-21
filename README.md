@@ -1,8 +1,8 @@
-# MD3 Palette Tool
+# MD3 Palette Comparator
 
 A one-page tool for generating and fine-tuning color palettes in Google's Material Design 3 (MD3) system.
 
-
+## 🚀 [Launch MD3 Palette Tool](https://jsethcreates.github.io/web-tool-md3-palette-lab/)
 ![MD3 Palette Tool Screenshot](https://raw.githubusercontent.com/JSethCreates/web-tool-md3-palette-lab/main/assets/demo.PNG)
 
 ---
@@ -13,7 +13,7 @@ This tool allows you to explore and compare how MD3 color logic behaves when gen
 
 ---
 
-## 🔍 Color Generation Logic
+## 🔍 HCT Color Generation - Local Logic
 
 ### Primary
 Generated using the seed hue with **high chroma (e.g. 48)** and a **mid-dark tone (e.g. 40)**. This produces a vivid, deep version of the base color.
@@ -34,7 +34,7 @@ These serve as grayish supporting tones.
 
 ---
 
-## 🧠 Google's Material Color Utilities (MCU)
+## 🧠 Google's Light and Dark Color Generation - Material Color Utilities (MCU)
 
 Google's MCU uses your source ARGB color to generate a full **101-tone HCT palette** for that hue (tones 0–100). This tonal palette:
 - Maintains **consistent hue**
