@@ -736,8 +736,7 @@
       const neutralVariant = generateHCT(hue, 8, 40);
       const darkerNeutral = generateHCT(hue, 8, 15);
 
-      const vividSeed = generateHCT(hue, 70, 70);
-      const sourceColorHct = Hct.fromInt(argbFromHex(vividSeed));
+      const sourceColorHct = Hct.fromInt(argbFromHex(input));
 
       const baseKeys = {
         '--md-sys-color-primary': primary,
