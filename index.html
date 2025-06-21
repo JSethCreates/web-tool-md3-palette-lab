@@ -97,13 +97,18 @@
     .poster-card {
       background-color: var(--md-sys-color-primary-container);
       border-radius: 12px;
-      padding: 1rem;
+      padding: 0;
       margin-bottom: 1.5rem;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
       text-align: center;
       transition: all 0.2s ease-in-out;
       transform: scale(1);
       cursor: pointer;
+      width: 200px;
+      aspect-ratio: 1 / 1.8;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
     .poster-card:hover {
@@ -113,10 +118,14 @@
 
     .poster-image {
       width: 100%;
-      max-height: 200px;
-      border-radius: 8px;
+      height: auto;
+      display: block;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
       object-fit: cover;
-      margin-bottom: 0.5rem;
+      flex-grow: 1;
     }
 
     .poster-title {
@@ -124,6 +133,7 @@
       font-weight: bold;
       color: var(--md-sys-color-on-primary-container);
       transition: color 0.2s ease-in-out;
+      padding: 0.5rem;
     }
 
     .poster-card:hover .poster-title {
@@ -208,43 +218,42 @@
     .md3-checkbox {
       display: inline-flex;
       align-items: center;
-      cursor: pointer;
       gap: 0.5em;
+      cursor: pointer;
       font-size: 0.95rem;
       color: var(--md-sys-color-on-surface, #eee);
-      position: relative;
     }
 
     .md3-checkbox input[type="checkbox"] {
-      appearance: none;
-      -webkit-appearance: none;
+      display: none;
+    }
+
+    .checkbox-box {
       width: 20px;
       height: 20px;
       border: 2px solid var(--md-sys-color-outline, #888);
       border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       background-color: transparent;
+      transition: background-color 0.2s, border-color 0.2s;
       position: relative;
-      display: inline-block;
-      vertical-align: middle;
-      cursor: pointer;
-      transition: background-color 0.2s ease, border-color 0.2s ease;
     }
 
-    .md3-checkbox input[type="checkbox"]:checked {
+    .md3-checkbox input[type="checkbox"]:checked + .checkbox-box {
       background-color: var(--md-sys-color-primary, #6200ee);
       border-color: var(--md-sys-color-primary, #6200ee);
     }
 
-    .md3-checkbox input[type="checkbox"]:checked::after {
+    .md3-checkbox input[type="checkbox"]:checked + .checkbox-box::after {
       content: "";
-      position: absolute;
-      left: 6px;
-      top: 2px;
       width: 5px;
       height: 10px;
       border: solid var(--md-sys-color-on-primary, #fff);
       border-width: 0 2px 2px 0;
       transform: rotate(45deg);
+      display: block;
     }
 
     .text-input {
@@ -284,6 +293,52 @@
       padding: 0.8rem;
       resize: vertical;
     }
+
+    .md3-textfield {
+      position: relative;
+      margin-top: 1rem;
+      width: 100%;
+      max-width: 200px;
+      font-family: inherit;
+    }
+
+    .md3-textfield input {
+      width: 100%;
+      padding: 1.2rem 0.5rem 0.4rem;
+      border: 1px solid var(--md-sys-color-outline, #777);
+      border-radius: 4px;
+      background-color: transparent;
+      color: var(--md-sys-color-on-surface, #eee);
+      font-size: 1rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .md3-textfield input:focus {
+      outline: none;
+      border-color: var(--md-sys-color-primary, #6200ee);
+    }
+
+    .md3-textfield label {
+      position: absolute;
+      top: 50%;
+      left: 0.5rem;
+      transform: translateY(-50%);
+      background: var(--md-sys-color-surface, #333);
+      color: var(--md-sys-color-on-surface, #aaa);
+      font-size: 1rem;
+      padding: 0 0.25em;
+      transition: 0.2s ease all;
+      pointer-events: none;
+    }
+
+    .md3-textfield input:focus + label,
+    .md3-textfield input:valid + label {
+      top: 0;
+      font-size: 0.75rem;
+      transform: translateY(-50%);
+      color: var(--md-sys-color-primary, #6200ee);
+    }
+
   </style>
 </head>
 <body>
@@ -379,7 +434,7 @@
       const container = section.querySelector('.example-card-container');
       container.innerHTML = `
         <div class="poster-card">
-          <img src="/assets/poster.jpg" alt="Poster" class="poster-image" />
+          <img src="./assets/poster.jpg" alt="Poster" class="poster-image" />
           <div class="poster-title">Film</div>
         </div>
         <div class="example-card">
@@ -392,7 +447,10 @@
             <span class="checkbox-box"></span>
             <span class="checkbox-label">Enable Feature</span>
           </label>
-          <input type="text" class="text-input" placeholder="Type here..." />
+          <div class="md3-textfield">
+            <input type="text" id="md3Text" required />
+            <label for="md3Text">Text Entry</label>
+          </div>
         </div>
       `;
     }
