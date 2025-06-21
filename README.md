@@ -78,4 +78,5 @@ Shifts the hue by **+60°** (moving one “segment” on the color wheel), with 
 
 ## 📄 License
 
+![License: WTFPL](https://img.shields.io/badge/License-WTFPL-brightgreen.svg)
 This project is licensed under the [WTFPL – Version 2](LICENSE).
