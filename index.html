@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Custom HCT vs. Google MD3 Light / Dark Palette Comparator</title>
   <style>
-    /* ====== COLOR VARIABLES ====== */
     :root {
       --bg-color: #121212;
       --card-bg: #1e1e1e;
@@ -17,26 +16,19 @@
       --button-default-hover: #444;
     }
 
-    /* ====== GLOBAL STYLES ====== */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
     body {
       font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
       padding: 2rem;
     }
+
     h1 {
       font-size: 1.8rem;
       margin-bottom: 1.5rem;
       text-align: center;
-      color: var(--text-color);
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     }
-    /* ====== INPUT ROW ====== */
+
     .input-row {
       display: flex;
       align-items: center;
@@ -45,120 +37,103 @@
       margin-bottom: 2rem;
       flex-wrap: wrap;
     }
-    .input-row label {
+
+    .input-row input,
+    .input-row button {
+      padding: 0.6rem;
       font-size: 1rem;
-      color: var(--text-color);
+      border-radius: 4px;
+      outline: none;
     }
-    .input-row input[type="color"],
-    .input-row input[type="text"] {
-      padding: 0.4rem 0.6rem;
-      font-size: 1rem;
+
+    .input-row input[type="color"] {
+      width: 120px;
       background: var(--input-bg);
       color: var(--text-color);
       border: 1px solid var(--input-border);
-      border-radius: 4px;
-      outline: none;
-      width: 120px;
     }
+
     .input-row input[type="text"] {
       width: 100px;
       text-align: center;
+      background: var(--input-bg);
+      color: var(--text-color);
+      border: 1px solid var(--input-border);
     }
+
     .input-row button {
-      padding: 0.6rem 1.2rem;
-      font-size: 1rem;
       background: var(--button-default-bg);
       color: var(--text-color);
       border: none;
-      border-radius: 4px;
       cursor: pointer;
-      transition: background 0.2s ease;
     }
+
     .input-row button:hover {
       background: var(--button-default-hover);
     }
 
-    /* ====== PALETTE CONTAINER ====== */
     .palette-container {
       display: flex;
       gap: 2rem;
-      align-items: flex-start;
-      justify-content: center;
       flex-wrap: wrap;
+      justify-content: center;
     }
+
     .section {
       flex: 1;
       min-width: 280px;
-      background-color: var(--card-bg);
+      background: var(--card-bg);
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-      overflow: visible; /* allow tooltips to show */
-      display: flex;
-      flex-direction: column;
-    }
-    .section-content {
       padding: 1rem;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: visible; /* ensure tooltips aren’t clipped */
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     }
+
     .section h2 {
       font-size: 1.2rem;
-      margin-bottom: 1rem;
-      color: var(--text-color);
       text-align: center;
-      position: relative;
+      margin-bottom: 1rem;
     }
 
-    /* ====== INFO ICON ====== */
-    .info-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: 0.3rem;
-      color: var(--text-color);
-      cursor: help;
-      position: relative;
-      width: 1.2rem;
-      height: 1.2rem;
-      border: 1px solid var(--text-color);
-      border-radius: 50%;
-      font-size: 0.8rem;
-      background-color: var(--card-bg);
-    }
-    .info-icon::after {
-      content: 'i';
-      line-height: 1;
-    }
-    .info-icon .tooltip {
-      visibility: hidden;
-      width: 200px;
-      background-color: var(--card-bg);
-      color: var(--text-color);
-      text-align: left;
-      border-radius: 4px;
-      padding: 0.5rem;
-      position: absolute;
-      top: 125%;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-      transition: opacity 0.2s ease;
-      z-index: 1;
-      font-size: 0.8rem;
-      line-height: 1.2;
-    }
-    .info-icon:hover .tooltip {
-      visibility: visible;
-      opacity: 1;
-    }
-
-    /* ====== EXAMPLE CARD ====== */
-    .example-card {
-      background: var(--md-sys-color-surface-container, #2a2a2a);
-      border-radius: 8px;
+    .poster-card {
+      background-color: var(--md-sys-color-primary-container);
+      border-radius: 12px;
       padding: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      transition: all 0.2s ease-in-out;
+      transform: scale(1);
+      cursor: pointer;
+    }
+
+    .poster-card:hover {
+      background-color: var(--md-sys-color-primary);
+      transform: scale(1.05);
+    }
+
+    .poster-image {
+      width: 100%;
+      max-height: 200px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-bottom: 0.5rem;
+    }
+
+    .poster-title {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--md-sys-color-on-primary-container);
+      transition: color 0.2s ease-in-out;
+    }
+
+    .poster-card:hover .poster-title {
+      color: var(--md-sys-color-on-primary);
+    }
+
+    .example-card {
+      background: var(--md-sys-color-surface);
+      padding: 1rem;
+      border-radius: 8px;
       margin-bottom: 1rem;
       display: flex;
       flex-wrap: wrap;
@@ -167,183 +142,148 @@
       align-items: center;
     }
 
-    /* ====== UI EXAMPLE ELEMENTS ====== */
     .btn-primary {
-      background: var(--md-sys-color-primary, #444);
+      background: var(--md-sys-color-primary, #888);
       color: var(--md-sys-color-on-primary, #fff);
       border: none;
       border-radius: 4px;
       padding: 0.6rem 1rem;
       cursor: pointer;
-      font-size: 0.9rem;
-      transition: transform 0.1s ease, filter 0.2s ease;
     }
-    .btn-primary:hover {
-      filter: brightness(1.1);
-      transform: translateY(-1px);
-    }
+
     .btn-secondary-solid {
+      background: var(--md-sys-color-secondary, #888);
+      color: var(--md-sys-color-on-primary, #fff);
+      border: none;
+      border-radius: 999px;
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+    }
+
+    .btn-secondary-outlined {
       background: var(--md-sys-color-tertiary, #555);
       color: var(--md-sys-color-on-primary, #fff);
       border: none;
       border-radius: 999px;
       padding: 0.6rem 1rem;
       cursor: pointer;
-      font-size: 0.9rem;
-      transition: transform 0.1s ease, filter 0.2s ease;
     }
-    .btn-secondary-solid:hover {
-      filter: brightness(1.15);
-      transform: translateY(-1px);
-    }
-    .btn-secondary-outlined {
-      background: transparent;
-      color: var(--md-sys-color-tertiary, #888);
-      border: 2px solid var(--md-sys-color-tertiary, #888);
-      border-radius: 999px;
-      padding: 0.6rem 1rem;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: transform 0.1s ease, background 0.2s ease;
-    }
-    .btn-secondary-outlined:hover {
-      transform: translateY(-1px);
-      background: var(--md-sys-color-tertiary-container, rgba(255, 255, 255, 0.05));
-    }
+
     .btn-text {
       background: transparent;
       color: var(--md-sys-color-tertiary, #888);
       border: none;
       padding: 0.6rem 1rem;
       cursor: pointer;
-      font-size: 0.9rem;
-      transition: transform 0.1s ease, background 0.2s ease;
-      border-radius: 4px;
     }
+
+    .btn-primary:hover {
+      background: var(--md-sys-color-primary-container, #aaa);
+      color: var(--md-sys-color-on-primary-container, #000);
+    }
+
+    .btn-secondary-solid:hover {
+      background: var(--md-sys-color-secondary-container, #aaa);
+      color: var(--md-sys-color-on-primary-container, #000);
+    }
+
+    .btn-secondary-outlined:hover {
+      background: var(--md-sys-color-tertiary-container, #aaa);
+      color: var(--md-sys-color-on-primary-container, #000);
+    }
+
     .btn-text:hover {
-      transform: translateY(-1px);
-      background: var(--md-sys-color-tertiary-container, rgba(255, 255, 255, 0.05));
+      background: var(--md-sys-color-tertiary-container, #222);
+      color: var(--md-sys-color-on-primary-container, #fff);
     }
-    .checkbox-wrapper {
-      display: flex;
+
+    .btn-label::before {
+      content: attr(data-label);
+    }
+
+    button:hover .btn-label::before {
+      content: attr(data-hover);
+    }
+
+    .md3-checkbox {
+      display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
-      margin-right: 0.5rem;
-    }
-    .checkbox-wrapper input[type="checkbox"] {
-      width: 1.2rem;
-      height: 1.2rem;
-      accent-color: var(--md-sys-color-primary, #fff);
       cursor: pointer;
+      gap: 0.5em;
+      font-size: 0.95rem;
+      color: var(--md-sys-color-on-surface, #eee);
+      position: relative;
     }
-    .checkbox-wrapper label {
-      color: var(--md-sys-color-on-surface, #ccc);
-      font-size: 0.9rem;
+
+    .md3-checkbox input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--md-sys-color-outline, #888);
+      border-radius: 4px;
+      background-color: transparent;
+      position: relative;
+      display: inline-block;
+      vertical-align: middle;
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
     }
+
+    .md3-checkbox input[type="checkbox"]:checked {
+      background-color: var(--md-sys-color-primary, #6200ee);
+      border-color: var(--md-sys-color-primary, #6200ee);
+    }
+
+    .md3-checkbox input[type="checkbox"]:checked::after {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border: solid var(--md-sys-color-on-primary, #fff);
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
     .text-input {
       background: var(--md-sys-color-surface, #333);
-      border: 1px solid var(--md-sys-color-outline, #555);
       color: var(--md-sys-color-on-surface, #eee);
+      border: 1px solid var(--md-sys-color-outline, #555);
       border-radius: 4px;
       padding: 0.5rem;
       font-size: 0.9rem;
       width: 100%;
       max-width: 200px;
-      outline: none;
     }
 
-    /* ====== SWATCH GRID ====== */
     .swatch-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0.5rem 1rem;
       margin-bottom: 1rem;
     }
+
     .swatch {
       padding: 0.8rem;
-      border: 1px solid var(--border-color);
       border-radius: 4px;
-      text-align: center;
       font-size: 0.75rem;
-      white-space: nowrap;
-      background-color: var(--input-bg);
-      transition: transform 0.2s ease;
-    }
-    .swatch:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
-    }
-    .gap {
-      grid-column: span 2;
-      height: 1rem;
-      background: none;
+      background: var(--input-bg);
+      text-align: center;
     }
 
-    /* ====== TEXTAREA ====== */
     textarea {
       width: 100%;
-      height: 420px; /* slightly taller */
+      height: 420px;
       background: var(--card-bg);
       color: var(--text-color);
       font-family: monospace;
-      font-size: 0.9rem;
-      white-space: pre;
-      resize: vertical;
       border: 1px solid var(--border-color);
       border-radius: 4px;
       padding: 0.8rem;
-      flex: none;
+      resize: vertical;
     }
-	
-	/* CARD BACKGROUNDS */
-	.section.custom .example-card,
-	.section.light .example-card,
-	.section.dark .example-card {
-	  background: var(--md-sys-color-primary-container);
-	  border-radius: 8px;
-	  padding: 1rem;
-	  margin-bottom: 1rem;
-	  display: flex;
-	  flex-wrap: wrap;
-	  gap: 0.75rem;
-	  justify-content: center;
-	  align-items: center;
-	}
-
-	/* TEXT INPUTS */
-	.section.custom .text-input,
-	.section.light .text-input,
-	.section.dark .text-input {
-	  background: var(--md-sys-color-surface);
-	  border: 1px solid var(--md-sys-color-outline);
-	  color: var(--md-sys-color-on-surface);
-	  border-radius: 4px;
-	  padding: 0.5rem;
-	  font-size: 0.9rem;
-	  width: 100%;
-	  max-width: 200px;
-	  outline: none;
-	}
-
-	/* TEXTAREAS */
-	.section.custom textarea,
-	.section.light textarea,
-	.section.dark textarea {
-	  background: var(--md-sys-color-surface);
-	  color: var(--md-sys-color-on-surface);
-	  font-family: monospace;
-	  font-size: 0.9rem;
-	  white-space: pre;
-	  resize: vertical;
-	  border: 1px solid var(--md-sys-color-outline);
-	  border-radius: 4px;
-	  padding: 0.8rem;
-	  height: 420px;
-	  width: 100%;
-	  flex: none;
-	}
-	
-	
   </style>
 </head>
 <body>
@@ -358,99 +298,23 @@
   </div>
 
   <div class="palette-container">
-    <!-- Custom HCT Section -->
     <div class="section custom">
-      <div class="section-content">
-        <h2>
-          Custom HCT Palette
-          <span class="info-icon">
-            <span class="tooltip">
-              Primary is generated by taking that hue and rendering an HCT color with high chroma (e.g. 48) and a mid‐dark tone (e.g. 40). That yields a vivid, deep version of the base color.<br><br>
-              Secondary uses the same hue but a lower chroma (e.g. 16) at the same tone (40), producing a more muted companion.<br><br>
-              Tertiary shifts the hue by +60° (so it’s one “segment” over on the wheel) with a moderate chroma (e.g. 24) at the same tone (40). This gives a distinct but harmonizing accent color.<br><br>
-              Neutral &amp; neutral-variant: We generate two low-chroma HCT colors at tone 40 (chroma ≈ 4 for neutral, chroma ≈ 8 for neutral-variant), plus a very dark neutral for “on-surface.” These act as grayish supporting colors.
-            </span>
-          </span>
-        </h2>
-        <div class="example-card">
-          <button class="btn-primary">Play</button>
-          <button class="btn-secondary-solid">Pause</button>
-          <button class="btn-secondary-outlined">Stop</button>
-          <button class="btn-text">More Info</button>
-          <div class="checkbox-wrapper">
-            <input type="checkbox" id="chk-hct" />
-            <label for="chk-hct">Enable Feature</label>
-          </div>
-          <input type="text" class="text-input" placeholder="Type here..." />
-        </div>
-        <div id="swatches" class="swatch-grid"></div>
-        <textarea id="output" readonly></textarea>
-      </div>
+      <h2>Custom HCT Palette</h2>
+      <div class="example-card-container"></div>
+      <div id="swatches" class="swatch-grid"></div>
+      <textarea id="output" readonly></textarea>
     </div>
-
-    <!-- Google Light Scheme Section -->
     <div class="section light">
-      <div class="section-content">
-        <h2>
-          Google MD3 “Light” Palette
-          <span class="info-icon">
-            <span class="tooltip">
-              Google’s Material Color Utilities (MCU) take the source color ARGB and internally compute a full 101-tone HCT palette for that hue (tones 0–100, for neutral, accent, etc.). In other words, they generate a very fine-grained set of HCT colors for every possible lightness, from black to white, all sharing the original hue and automatically setting chroma as needed.<br><br>
-              Predefined tone assignments: MD3 then “plucks” from that 101-tone set to assign roles—e.g. for a light scheme:<br>
-              • primary = tone 40 from the accent palette<br>
-              • onPrimary = tone 100<br>
-              • primaryContainer = tone 90<br>
-              • onPrimaryContainer = tone 10<br>
-              • secondary = tone 40 from a secondary accent (or same accent if none)<br>
-              • tertiary = tone 40 from yet another (or from a built-in tertiary generator)<br>
-              • surface = tone 99<br>
-              • onSurface = tone 10<br>
-              … and so on, for every token in the system. Google supplies a large lookup table mapping each “md-sys-color-…” role to one specific tone number (and sometimes a different hue if it’s a tertiary “neutral variant”).<br><br>
-              Automatically balanced chroma: Because MCU’s tonal palette algorithm adjusts chroma dynamically to maintain legibility at different tones, the MD3 palette is guaranteed to meet contrast requirements. You don’t manually choose chroma values—the library does it all.
-            </span>
-          </span>
-        </h2>
-        <div class="example-card">
-          <button class="btn-primary">Play</button>
-          <button class="btn-secondary-solid">Pause</button>
-          <button class="btn-secondary-outlined">Stop</button>
-          <button class="btn-text">More Info</button>
-          <div class="checkbox-wrapper">
-            <input type="checkbox" id="chk-light" />
-            <label for="chk-light">Enable Feature</label>
-          </div>
-          <input type="text" class="text-input" placeholder="Type here..." />
-        </div>
-        <div id="lightSwatches" class="swatch-grid"></div>
-        <textarea id="lightOutput" readonly></textarea>
-      </div>
+      <h2>Google MD3 “Light” Palette</h2>
+      <div class="example-card-container"></div>
+      <div id="lightSwatches" class="swatch-grid"></div>
+      <textarea id="lightOutput" readonly></textarea>
     </div>
-
-    <!-- Google Dark Scheme Section -->
     <div class="section dark">
-      <div class="section-content">
-        <h2>
-          Google MD3 “Dark” Palette
-          <span class="info-icon">
-            <span class="tooltip">
-              This is the Dark scheme developed by Google for the MD3 design system.
-            </span>
-          </span>
-        </h2>
-        <div class="example-card">
-          <button class="btn-primary">Play</button>
-          <button class="btn-secondary-solid">Pause</button>
-          <button class="btn-secondary-outlined">Stop</button>
-          <button class="btn-text">More Info</button>
-          <div class="checkbox-wrapper">
-            <input type="checkbox" id="chk-dark" />
-            <label for="chk-dark">Enable Feature</label>
-          </div>
-          <input type="text" class="text-input" placeholder="Type here..." />
-        </div>
-        <div id="darkSwatches" class="swatch-grid"></div>
-        <textarea id="darkOutput" readonly></textarea>
-      </div>
+      <h2>Google MD3 “Dark” Palette</h2>
+      <div class="example-card-container"></div>
+      <div id="darkSwatches" class="swatch-grid"></div>
+      <textarea id="darkOutput" readonly></textarea>
     </div>
   </div>
 
@@ -461,26 +325,17 @@
       themeFromSourceColor
     } from 'https://unpkg.com/@material/material-color-utilities@0.3.0';
 
-    // Utility: Hex ↔ RGB
     function hexToRgb(hex) {
-      hex = hex.replace('#', '');
-      const bigint = parseInt(hex, 16);
-      return {
-        r: (bigint >> 16) & 255,
-        g: (bigint >> 8) & 255,
-        b: bigint & 255
-      };
+      const bigint = parseInt(hex.replace('#', ''), 16);
+      return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
     }
+
     function rgbToHex(r, g, b) {
       return (
-        '#' +
-        [r, g, b]
-          .map((x) => x.toString(16).padStart(2, '0'))
-          .join('')
+        '#' + [r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('')
       );
     }
 
-    // Simple lightness interpolation toward white
     function adjustLightness(hex, percent) {
       const { r, g, b } = hexToRgb(hex);
       const newR = Math.min(255, Math.floor(r + (255 - r) * percent));
@@ -489,23 +344,19 @@
       return rgbToHex(newR, newG, newB);
     }
 
-    // Rough HCT generation: (hue, chroma, tone)
-    function generateHCT(baseHue, chroma, tone) {
-      const h = baseHue;
+    function generateHCT(h, chroma, tone) {
       const s = Math.min(chroma / 100, 1);
-      const lPct = tone / 100;
-      const c1 = (1 - Math.abs(2 * lPct - 1)) * s;
+      const l = tone / 100;
+      const c1 = (1 - Math.abs(2 * l - 1)) * s;
       const x = c1 * (1 - Math.abs((h / 60) % 2 - 1));
-      const m = lPct - c1 / 2;
+      const m = l - c1 / 2;
       let r1 = 0, g1 = 0, b1 = 0;
-
       if (h < 60) [r1, g1, b1] = [c1, x, 0];
       else if (h < 120) [r1, g1, b1] = [x, c1, 0];
       else if (h < 180) [r1, g1, b1] = [0, c1, x];
       else if (h < 240) [r1, g1, b1] = [0, x, c1];
       else if (h < 300) [r1, g1, b1] = [x, 0, c1];
       else [r1, g1, b1] = [c1, 0, x];
-
       return rgbToHex(
         Math.round((r1 + m) * 255),
         Math.round((g1 + m) * 255),
@@ -513,188 +364,148 @@
       );
     }
 
-    // Sync text input and color picker
-    document.getElementById('colorInput').addEventListener('input', (e) => {
+    document.getElementById('colorInput').addEventListener('input', e => {
       document.getElementById('hexInput').value = e.target.value.toUpperCase();
     });
-    document.getElementById('hexInput').addEventListener('input', (e) => {
+
+    document.getElementById('hexInput').addEventListener('input', e => {
       const val = e.target.value.trim();
       if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
         document.getElementById('colorInput').value = val;
       }
     });
 
-window.generatePalette = function generatePalette() {
-  const hexText = document.getElementById('hexInput').value.trim();
-  const input = /^#[0-9A-Fa-f]{6}$/.test(hexText)
-    ? hexText
-    : document.getElementById('colorInput').value;
-  const { r, g, b } = hexToRgb(input);
+    function createExampleCard(section) {
+      const container = section.querySelector('.example-card-container');
+      container.innerHTML = `
+        <div class="poster-card">
+          <img src="/assets/poster.jpg" alt="Poster" class="poster-image" />
+          <div class="poster-title">Film</div>
+        </div>
+        <div class="example-card">
+          <button class="btn-primary"><span class="btn-label" data-label="Primary" data-hover="On-Primary"></span></button>
+          <button class="btn-secondary-solid"><span class="btn-label" data-label="Secondary" data-hover="On-Secondary"></span></button>
+          <button class="btn-secondary-outlined"><span class="btn-label" data-label="Tertiary" data-hover="On-Tertiary"></span></button>
+          <button class="btn-text"><span class="btn-label" data-label="More Info" data-hover="On-Tertiary"></span></button>
+          <label class="md3-checkbox">
+            <input type="checkbox">
+            <span class="checkbox-box"></span>
+            <span class="checkbox-label">Enable Feature</span>
+          </label>
+          <input type="text" class="text-input" placeholder="Type here..." />
+        </div>
+      `;
+    }
+    function renderSwatches(keysMap, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      Object.entries(keysMap).forEach(([key, val]) => {
+        const div = document.createElement('div');
+        div.className = 'swatch';
+        div.style.background = val;
+        const { r, g, b } = hexToRgb(val);
+        const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+        div.style.color = brightness > 140 ? '#000' : '#fff';
+        div.textContent = `${key}: ${val}`;
+        container.appendChild(div);
+      });
+    }
 
-  const hue = Math.round(
-    ((Math.atan2(
-      Math.sqrt(3) * (g - b),
-      2 * r - g - b
-    ) * 180) / Math.PI + 360) % 360
-  );
+    function buildOutput(keysMap, textareaId) {
+      const lines = Object.entries(keysMap).map(([k, v]) => `${k}: ${v};`);
+      document.getElementById(textareaId).value = lines.join('\n');
+    }
 
-  const primary = generateHCT(hue, 48, 40);
-  const secondary = generateHCT(hue, 16, 40);
-  const tertiary = generateHCT((hue + 60) % 360, 24, 40);
-  const neutral = generateHCT(hue, 4, 40);
-  const neutralVariant = generateHCT(hue, 8, 40);
-  const darkerNeutralVariant = generateHCT(hue, 8, 15);
+    window.generatePalette = function generatePalette() {
+      const hexText = document.getElementById('hexInput').value.trim();
+      const input = /^#[0-9A-Fa-f]{6}$/.test(hexText)
+        ? hexText
+        : document.getElementById('colorInput').value;
+      const { r, g, b } = hexToRgb(input);
+      const hue = Math.round(((Math.atan2(Math.sqrt(3)*(g-b), 2*r-g-b)*180/Math.PI)+360)%360);
 
-  const hctKeys = {
-    '--md-sys-color-primary': primary,
-    '--md-sys-color-secondary': secondary,
-    '--md-sys-color-tertiary': tertiary,
-    '--md-sys-color-on-primary': '#FFFFFF',
-    '--md-sys-color-surface': adjustLightness(primary, 0.85),
-    '--md-sys-color-primary-container': adjustLightness(primary, 0.55),
-    '--md-sys-color-secondary-container': adjustLightness(primary, 0.70),
-    '--md-sys-color-tertiary-container': adjustLightness(tertiary, 0.55),
-    '--md-sys-color-on-primary-container': adjustLightness(primary, 0.40),
-    '--md-sys-color-neutral': neutral,
-    '--md-sys-color-outline': neutral,
-    '--md-sys-color-on-surface': darkerNeutralVariant,
-    '--md-sys-color-neutral-variant': neutralVariant,
-    '--bg-color': '#181818',
-    '--indicator-bg': '#10101094',
-    '--transparent-bg': '#10101000'
-  };
+      const primary = generateHCT(hue, 48, 40);
+      const secondary = generateHCT(hue, 16, 40);
+      const tertiary = generateHCT((hue + 60) % 360, 24, 40);
+      const neutral = generateHCT(hue, 4, 40);
+      const neutralVariant = generateHCT(hue, 8, 40);
+      const darkerNeutral = generateHCT(hue, 8, 15);
 
-  const pairedKeys = [
-    ['--md-sys-color-primary', '--md-sys-color-on-primary'],
-    ['--md-sys-color-secondary', '--md-sys-color-neutral'],
-    ['--md-sys-color-tertiary', '--md-sys-color-outline'],
-    [],
-    ['--md-sys-color-surface', '--md-sys-color-on-surface'],
-    ['--md-sys-color-secondary-container', '--md-sys-color-neutral-variant'],
-    ['--md-sys-color-primary-container', '--bg-color'],
-    ['--md-sys-color-on-primary-container', '--indicator-bg'],
-    ['--md-sys-color-tertiary-container', '--transparent-bg']
-  ];
+      const vividSeed = generateHCT(hue, 70, 70);
+      const theme = themeFromSourceColor(argbFromHex(vividSeed));
+      const light = theme.schemes.light;
+      const dark = theme.schemes.dark;
 
-	const orderedKeys = [
-	  '--md-sys-color-primary',
-	  '--md-sys-color-secondary',
-	  '--md-sys-color-tertiary',
-	  '',
+      const applyColors = (section, colors) => {
+        Object.entries(colors).forEach(([key, val]) =>
+          section.style.setProperty(key, val)
+        );
+      };
 
-	  '--md-sys-color-on-primary',
-	  '--md-sys-color-primary-container',
-	  '--md-sys-color-on-primary-container',
-	  '',
+      const baseKeys = {
+        '--md-sys-color-primary': primary,
+        '--md-sys-color-secondary': secondary,
+        '--md-sys-color-tertiary': tertiary,
+        '--md-sys-color-on-primary': '#FFFFFF',
+        '--md-sys-color-surface': adjustLightness(primary, 0.85),
+        '--md-sys-color-primary-container': adjustLightness(primary, 0.55),
+        '--md-sys-color-secondary-container': adjustLightness(primary, 0.70),
+        '--md-sys-color-tertiary-container': adjustLightness(tertiary, 0.55),
+        '--md-sys-color-on-primary-container': adjustLightness(primary, 0.40),
+        '--md-sys-color-neutral': neutral,
+        '--md-sys-color-outline': neutral,
+        '--md-sys-color-on-surface': darkerNeutral,
+        '--md-sys-color-neutral-variant': neutralVariant
+      };
 
-	  '--md-sys-color-surface',
-	  '--md-sys-color-on-surface',
-	  '--md-sys-color-outline',
-	  '',
+      const lightKeys = {
+        '--md-sys-color-primary': hexFromArgb(light.primary),
+        '--md-sys-color-secondary': hexFromArgb(light.secondary),
+        '--md-sys-color-tertiary': hexFromArgb(light.tertiary),
+        '--md-sys-color-on-primary': hexFromArgb(light.onPrimary),
+        '--md-sys-color-surface': hexFromArgb(light.surface),
+        '--md-sys-color-primary-container': hexFromArgb(light.primaryContainer),
+        '--md-sys-color-secondary-container': hexFromArgb(light.secondaryContainer),
+        '--md-sys-color-tertiary-container': hexFromArgb(light.tertiaryContainer),
+        '--md-sys-color-on-primary-container': hexFromArgb(light.onPrimaryContainer),
+        '--md-sys-color-neutral': hexFromArgb(light.neutral),
+        '--md-sys-color-outline': hexFromArgb(light.outline),
+        '--md-sys-color-on-surface': hexFromArgb(light.onSurface),
+        '--md-sys-color-neutral-variant': hexFromArgb(light.neutralVariant)
+      };
 
-	  '--md-sys-color-secondary-container',
-	  '--md-sys-color-tertiary-container',
-	  '--md-sys-color-neutral',
-	  '--md-sys-color-neutral-variant',
-	  '',
+      const darkKeys = {
+        '--md-sys-color-primary': hexFromArgb(dark.primary),
+        '--md-sys-color-secondary': hexFromArgb(dark.secondary),
+        '--md-sys-color-tertiary': hexFromArgb(dark.tertiary),
+        '--md-sys-color-on-primary': hexFromArgb(dark.onPrimary),
+        '--md-sys-color-surface': hexFromArgb(dark.surface),
+        '--md-sys-color-primary-container': hexFromArgb(dark.primaryContainer),
+        '--md-sys-color-secondary-container': hexFromArgb(dark.secondaryContainer),
+        '--md-sys-color-tertiary-container': hexFromArgb(dark.tertiaryContainer),
+        '--md-sys-color-on-primary-container': hexFromArgb(dark.onPrimaryContainer),
+        '--md-sys-color-neutral': hexFromArgb(dark.neutral),
+        '--md-sys-color-outline': hexFromArgb(dark.outline),
+        '--md-sys-color-on-surface': hexFromArgb(dark.onSurface),
+        '--md-sys-color-neutral-variant': hexFromArgb(dark.neutralVariant)
+      };
 
-	  '--indicator-bg',
-	  '--transparent-bg',
-	  '--bg-color'
-	];
+      applyColors(document.querySelector('.section.custom'), baseKeys);
+      applyColors(document.querySelector('.section.light'), lightKeys);
+      applyColors(document.querySelector('.section.dark'), darkKeys);
 
-  const vividSeedHex = generateHCT(hue, 70, 70); // or chroma: 60, tone: 50
-  const theme = themeFromSourceColor(argbFromHex(vividSeedHex));
-  
-  const light = theme.schemes.light;
-  const dark = theme.schemes.dark;
+      createExampleCard(document.querySelector('.section.custom'));
+      createExampleCard(document.querySelector('.section.light'));
+      createExampleCard(document.querySelector('.section.dark'));
 
-  const lightKeys = {
-    '--md-sys-color-primary': hexFromArgb(light.primary),
-    '--md-sys-color-secondary': hexFromArgb(light.secondary),
-    '--md-sys-color-tertiary': hexFromArgb(light.tertiary),
-    '--md-sys-color-on-primary': hexFromArgb(light.onPrimary),
-    '--md-sys-color-surface': hexFromArgb(light.surface),
-    '--md-sys-color-primary-container': hexFromArgb(light.primaryContainer),
-    '--md-sys-color-secondary-container': hexFromArgb(light.secondaryContainer),
-    '--md-sys-color-tertiary-container': hexFromArgb(light.tertiaryContainer),
-    '--md-sys-color-on-primary-container': hexFromArgb(light.onPrimaryContainer),
-    '--md-sys-color-neutral': hexFromArgb(light.neutral),
-    '--md-sys-color-outline': hexFromArgb(light.outline),
-    '--md-sys-color-on-surface': hexFromArgb(light.onSurface),
-    '--md-sys-color-neutral-variant': hexFromArgb(light.neutralVariant),
-    '--bg-color': hexFromArgb(light.background),
-    '--indicator-bg': hexFromArgb(light.inverseSurface),
-    '--transparent-bg': '#00000000'
-  };
+      renderSwatches(baseKeys, 'swatches');
+      renderSwatches(lightKeys, 'lightSwatches');
+      renderSwatches(darkKeys, 'darkSwatches');
 
-  const darkKeys = {
-    '--md-sys-color-primary': hexFromArgb(dark.primary),
-    '--md-sys-color-secondary': hexFromArgb(dark.secondary),
-    '--md-sys-color-tertiary': hexFromArgb(dark.tertiary),
-    '--md-sys-color-on-primary': hexFromArgb(dark.onPrimary),
-    '--md-sys-color-surface': hexFromArgb(dark.surface),
-    '--md-sys-color-primary-container': hexFromArgb(dark.primaryContainer),
-    '--md-sys-color-secondary-container': hexFromArgb(dark.secondaryContainer),
-    '--md-sys-color-tertiary-container': hexFromArgb(dark.tertiaryContainer),
-    '--md-sys-color-on-primary-container': hexFromArgb(dark.onPrimaryContainer),
-    '--md-sys-color-neutral': hexFromArgb(dark.neutral),
-    '--md-sys-color-outline': hexFromArgb(dark.outline),
-    '--md-sys-color-on-surface': hexFromArgb(dark.onSurface),
-    '--md-sys-color-neutral-variant': hexFromArgb(dark.neutralVariant),
-    '--bg-color': hexFromArgb(dark.background),
-    '--indicator-bg': hexFromArgb(dark.inverseSurface),
-    '--transparent-bg': '#00000000'
-  };
-
-  const customSection = document.querySelector('.section.custom');
-  Object.entries(hctKeys).forEach(([key, val]) => customSection.style.setProperty(key, val));
-  const lightSection = document.querySelector('.section.light');
-  Object.entries(lightKeys).forEach(([key, val]) => lightSection.style.setProperty(key, val));
-  const darkSection = document.querySelector('.section.dark');
-  Object.entries(darkKeys).forEach(([key, val]) => darkSection.style.setProperty(key, val));
-
-  function renderSwatches(keysMap, containerId) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = '';
-    pairedKeys.forEach((pair) => {
-      if (pair.length === 0) {
-        const gapElem = document.createElement('div');
-        gapElem.className = 'gap';
-        container.appendChild(gapElem);
-      } else {
-        pair.forEach((key) => {
-          const val = keysMap[key];
-          const div = document.createElement('div');
-          div.className = 'swatch';
-          div.style.background = val;
-          const { r, g, b } = hexToRgb(val);
-          const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
-          div.style.color = brightness > 140 ? '#000' : '#fff';
-          div.textContent = `${key}: ${val}`;
-          container.appendChild(div);
-        });
-      }
-    });
-  }
-
-  function buildOutput(keysMap, textareaId) {
-  const lines = orderedKeys.map((k) => (k ? `${k}: ${keysMap[k]};` : ''));
-  const wrapped = lines.join('\n');
-  document.getElementById(textareaId).value = wrapped;
-}
-
-  renderSwatches(hctKeys, 'swatches');
-  buildOutput(hctKeys, 'output');
-
-  renderSwatches(lightKeys, 'lightSwatches');
-  buildOutput(lightKeys, 'lightOutput');
-
-  renderSwatches(darkKeys, 'darkSwatches');
-  buildOutput(darkKeys, 'darkOutput');
-};
-
-
+      buildOutput(baseKeys, 'output');
+      buildOutput(lightKeys, 'lightOutput');
+      buildOutput(darkKeys, 'darkOutput');
+    };
   </script>
 </body>
 </html>
