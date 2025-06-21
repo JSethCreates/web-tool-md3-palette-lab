@@ -37,7 +37,47 @@ Google provides a system-wide mapping table assigning tones to every `md-sys-col
 🧪 Material Design Schemes (MCU Presets)
 Material Design 3 offers multiple dynamic color schemes — each a strategy for how to use your seed color to generate themed palettes. These schemes determine not just tones and chroma, but how neutral or expressive the result feels.
 
-<pre lang="md"> ### 🔁 Available Schemes | **Scheme Name** | **Description** | |----------------|-----------------| | `Custom HCT` | Uses your local manual logic based on HCT hue/chroma/tone settings. Great for exploring alternative interpretations. | | `Tonal Spot` | Google’s default scheme, used on Pixel devices. Balanced and elegant. | | `Expressive` | Injects bold, vibrant color choices into the UI. Higher chroma and lively contrast. | | `Vibrant` | Even more saturated than Expressive — ideal for colorful UIs or branding-heavy designs. | | `Fidelity` | Stays extremely close to the seed color — prioritizing hue accuracy over balance. | | `Content` | Optimized for content-rich UIs like media or reading apps — focuses on legibility and neutrality. | | `Monochrome` | Uses tone-only variation with almost no chroma — excellent for minimalist, grayscale designs. | | `Rainbow` | For experimental or playful use: assigns different hues across roles to maximize diversity. | | `Fruit Salad` | Another fun, thematic option with playful chromatic shifts (as the name implies). | </pre>
+🔁 Available Schemes
+
+Scheme Name
+
+Description
+
+Custom HCT
+
+Uses your local manual logic based on HCT hue/chroma/tone settings. Great for exploring alternative interpretations.
+
+Tonal Spot
+
+Google’s default scheme, used on Pixel devices. Balanced and elegant.
+
+Expressive
+
+Injects bold, vibrant color choices into the UI. Higher chroma and lively contrast.
+
+Vibrant
+
+Even more saturated than Expressive — ideal for colorful UIs or branding-heavy designs.
+
+Fidelity
+
+Stays extremely close to the seed color — prioritizing hue accuracy over balance.
+
+Content
+
+Optimized for content-rich UIs like media or reading apps — focuses on legibility and neutrality.
+
+Monochrome
+
+Uses tone-only variation with almost no chroma — excellent for minimalist, grayscale designs.
+
+Rainbow
+
+For experimental or playful use: assigns different hues across roles to maximize diversity.
+
+Fruit Salad
+
+Another fun, thematic option with playful chromatic shifts (as the name implies).
 
 Each of these schemes interprets the seed color differently — whether to preserve hue fidelity, amp up saturation, reduce visual noise, or add vibrancy.
 ---
