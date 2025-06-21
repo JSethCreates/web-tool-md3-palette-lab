@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Custom HCT vs. Google MD3 Light / Dark Palette Comparator</title>
+  <link
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet"
+  />
   <style>
     :root {
       --bg-color: #121212;
@@ -142,22 +146,24 @@
 
     .example-card {
       background: var(--md-sys-color-surface);
-      padding: 1rem;
+      padding: 0.75rem;
       border-radius: 8px;
       margin-bottom: 1rem;
       display: flex;
       flex-wrap: wrap;
-      gap: 0.75rem;
-      justify-content: center;
+      gap: 0.5rem;
+      justify-content: flex-start;
       align-items: center;
+      max-width: 240px; /* manual width cap */
     }
+
 
     .btn-primary {
       background: var(--md-sys-color-primary, #888);
       color: var(--md-sys-color-on-primary, #fff);
       border: none;
       border-radius: 4px;
-      padding: 0.6rem 1rem;
+      padding: 0.3rem 0.7rem;
       cursor: pointer;
     }
 
@@ -166,7 +172,7 @@
       color: var(--md-sys-color-on-primary, #fff);
       border: none;
       border-radius: 999px;
-      padding: 0.6rem 1rem;
+      padding: 0.3rem 0.7rem;
       cursor: pointer;
     }
 
@@ -175,7 +181,7 @@
       color: var(--md-sys-color-on-primary, #fff);
       border: none;
       border-radius: 999px;
-      padding: 0.6rem 1rem;
+      padding: 0.3rem 0.7rem;
       cursor: pointer;
     }
 
@@ -218,27 +224,16 @@
     .md3-checkbox {
       display: inline-flex;
       align-items: center;
-      gap: 0.5em;
-      cursor: pointer;
-      font-size: 0.95rem;
-      color: var(--md-sys-color-on-surface, #eee);
+      gap: 0.5rem;
     }
-
     .md3-checkbox input[type="checkbox"] {
-      display: none;
-    }
-
-    .checkbox-box {
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--md-sys-color-outline, #888);
-      border-radius: 4px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background-color: transparent;
-      transition: background-color 0.2s, border-color 0.2s;
-      position: relative;
+      /* size + remove default margin */
+      width: 1.25rem;
+      height: 1.25rem;
+      margin: 0;
+      vertical-align: middle;
+      /* MD3 accent */
+      accent-color: var(--md-sys-color-primary);
     }
 
     .md3-checkbox input[type="checkbox"]:checked + .checkbox-box {
@@ -267,24 +262,35 @@
       max-width: 200px;
     }
 
+    .checkbox-label {
+      color: var(--md-sys-color-on-surface);
+    }
+
+    .md3-textfield label {
+      color: var(--md-sys-color-on-surface);
+    }
+
     .swatch-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
       margin-bottom: 1rem;
     }
 
     .swatch {
-      padding: 0.8rem;
+      padding: 0.7rem 0.5rem;
       border-radius: 4px;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       background: var(--input-bg);
-      text-align: center;
+      text-align: left;
+      line-height: 1.5;
+      font-family: monospace;
     }
 
     textarea {
-      width: 100%;
-      height: 420px;
+      width: 90%;
+      height: auto;
+      min-height: 160px;
       background: var(--card-bg);
       color: var(--text-color);
       font-family: monospace;
@@ -292,25 +298,25 @@
       border-radius: 4px;
       padding: 0.8rem;
       resize: vertical;
+      margin-bottom: 1rem;
     }
 
     .md3-textfield {
+      display: inline-flex;
+      align-items: center;
       position: relative;
-      margin-top: 1rem;
-      width: 100%;
-      max-width: 200px;
-      font-family: inherit;
-    }
-
-    .md3-textfield input {
-      width: 100%;
-      padding: 1.2rem 0.5rem 0.4rem;
-      border: 1px solid var(--md-sys-color-outline, #777);
-      border-radius: 4px;
-      background-color: transparent;
-      color: var(--md-sys-color-on-surface, #eee);
       font-size: 1rem;
-      transition: border-color 0.2s ease;
+    }
+    .md3-textfield input {
+      /* equal height & vertical-align */
+      height: 2.5rem;
+      padding: 0 0.75rem;
+      line-height: 1.5;
+      vertical-align: middle;
+      border: 1px solid var(--md-sys-color-outline);
+      border-radius: 4px;
+      background: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
     }
 
     .md3-textfield input:focus {
@@ -320,23 +326,59 @@
 
     .md3-textfield label {
       position: absolute;
+      left: 0.75rem;
       top: 50%;
-      left: 0.5rem;
       transform: translateY(-50%);
-      background: var(--md-sys-color-surface, #333);
-      color: var(--md-sys-color-on-surface, #aaa);
-      font-size: 1rem;
-      padding: 0 0.25em;
-      transition: 0.2s ease all;
       pointer-events: none;
+      background: var(--md-sys-color-surface);
+      padding: 0 0.25rem;
+      transition: transform 0.25s ease, font-size 0.25s ease;
+      will-change: transform, font-size;
     }
-
+    /* float label on focus or once there's content */
     .md3-textfield input:focus + label,
     .md3-textfield input:valid + label {
       top: 0;
+      transform: translateY(-50%) scale(0.75);
       font-size: 0.75rem;
-      transform: translateY(-50%);
-      color: var(--md-sys-color-primary, #6200ee);
+    }
+
+    .example-card-row {
+      display: flex;
+      align-items: flex-start; /* align tops */
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    /* 2. Column inside the row for both control-rows */
+    .controls-column {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    /* 3. RW/Play/FF buttons: outlined with outline token, fill on hover */
+    .btn-media {
+      background: transparent;
+      border: 1px solid var(--md-sys-color-outline);
+      color: var(--md-sys-color-outline);
+      border-radius: 50%;
+      width: 3rem;
+      height: 3rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .btn-media:hover {
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+      border-color: var(--md-sys-color-primary-container);
+    }
+
+    /* 4. Secondary row (Stop, Pause, Shuffle) */
+    .media-buttons-secondary {
+      display: flex;
+      gap: 0.5rem;
     }
 
   </style>
@@ -356,20 +398,20 @@
     <div class="section custom">
       <h2>Custom HCT Palette</h2>
       <div class="example-card-container"></div>
-      <div id="swatches" class="swatch-grid"></div>
       <textarea id="output" readonly></textarea>
+      <div id="swatches" class="swatch-grid"></div>
     </div>
     <div class="section light">
       <h2>Google MD3 “Light” Palette</h2>
       <div class="example-card-container"></div>
-      <div id="lightSwatches" class="swatch-grid"></div>
       <textarea id="lightOutput" readonly></textarea>
+      <div id="lightSwatches" class="swatch-grid"></div>
     </div>
     <div class="section dark">
       <h2>Google MD3 “Dark” Palette</h2>
       <div class="example-card-container"></div>
-      <div id="darkSwatches" class="swatch-grid"></div>
       <textarea id="darkOutput" readonly></textarea>
+      <div id="darkSwatches" class="swatch-grid"></div>
     </div>
   </div>
 
@@ -433,45 +475,150 @@
     function createExampleCard(section) {
       const container = section.querySelector('.example-card-container');
       container.innerHTML = `
-        <div class="poster-card">
-          <img src="./assets/poster.jpg" alt="Poster" class="poster-image" />
-          <div class="poster-title">Film</div>
-        </div>
-        <div class="example-card">
-          <button class="btn-primary"><span class="btn-label" data-label="Primary" data-hover="On-Primary"></span></button>
-          <button class="btn-secondary-solid"><span class="btn-label" data-label="Secondary" data-hover="On-Secondary"></span></button>
-          <button class="btn-secondary-outlined"><span class="btn-label" data-label="Tertiary" data-hover="On-Tertiary"></span></button>
-          <button class="btn-text"><span class="btn-label" data-label="More Info" data-hover="On-Tertiary"></span></button>
-          <label class="md3-checkbox">
-            <input type="checkbox">
-            <span class="checkbox-box"></span>
-            <span class="checkbox-label">Enable Feature</span>
-          </label>
-          <div class="md3-textfield">
-            <input type="text" id="md3Text" required />
-            <label for="md3Text">Text Entry</label>
+        <div class="example-card-row">
+          <div class="poster-card">
+            <img src="./assets/poster.jpg" alt="Poster" class="poster-image" />
+            <div class="poster-title">Film</div>
+          </div>
+          <div class="controls-column">
+            <!-- RW / Play / FF -->
+            <div class="media-controls">
+              <button class="btn-media" title="Rewind">
+                <span class="material-icons">fast_rewind</span>
+              </button>
+              <button class="btn-media" title="Play">
+                <span class="material-icons">play_arrow</span>
+              </button>
+              <button class="btn-media" title="Fast Forward">
+                <span class="material-icons">fast_forward</span>
+              </button>
+            </div>
+            <!-- Stop / Pause / Shuffle -->
+            <div class="media-buttons-secondary">
+              <button class="btn-secondary-solid" title="Stop">
+                <span class="material-icons">stop</span>
+              </button>
+              <button class="btn-secondary-outlined" title="Pause">
+                <span class="material-icons">pause</span>
+              </button>
+              <button class="btn-text" title="Shuffle">
+                <span class="material-icons">shuffle</span>
+              </button>
+            </div>
+            <!-- Reinstated MD3 controls, checkbox & textfield -->
+            <div class="example-card">
+              <button class="btn-primary">
+                Primary
+              </button>
+              <button class="btn-secondary-solid">
+                Secondary
+              </button>
+              <button class="btn-secondary-outlined">
+                Tertiary
+              </button>
+              <label class="md3-checkbox">
+                <input type="checkbox" />
+                <span class="checkbox-label">Enable Feature</span>
+              </label>
+              <div style="flex-basis: 100%; margin-top: 0.5rem;">
+                <div class="md3-textfield">
+                  <input type="text" id="md3Text" required />
+                  <label for="md3Text">Text Entry</label>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       `;
     }
+
     function renderSwatches(keysMap, containerId) {
       const container = document.getElementById(containerId);
       container.innerHTML = '';
-      Object.entries(keysMap).forEach(([key, val]) => {
+
+      const orderedKeys = [
+        '--md-sys-color-primary',
+        '--md-sys-color-secondary',
+        '--md-sys-color-tertiary',
+
+        '--md-sys-color-on-primary',
+        '--md-sys-color-primary-container',
+        '--md-sys-color-on-primary-container',
+
+        '--md-sys-color-surface',
+        '--md-sys-color-on-surface',
+        '--md-sys-color-outline',
+
+        '--md-sys-color-on-secondary',
+        '--md-sys-color-secondary-container',
+        '--md-sys-color-on-secondary-container',
+
+        '--md-sys-color-on-tertiary',
+        '--md-sys-color-tertiary-container',
+        '--md-sys-color-on-tertiary-container',
+
+        '--md-sys-color-neutral'
+      ];
+
+      orderedKeys.forEach((key, idx) => {
+        const value = keysMap[key];
+        if (!value) return;
+
         const div = document.createElement('div');
         div.className = 'swatch';
-        div.style.background = val;
-        const { r, g, b } = hexToRgb(val);
+        div.style.background = value;
+
+        const { r, g, b } = hexToRgb(value);
         const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
         div.style.color = brightness > 140 ? '#000' : '#fff';
-        div.textContent = `${key}: ${val}`;
+
+        div.textContent = `${key}: ${value}`;
+
         container.appendChild(div);
+
+        // Insert vertical spacer after specific indexes to match textarea blank lines
+        if ([2, 5, 8, 11, 14].includes(idx)) {
+          const spacer = document.createElement('div');
+          spacer.style.height = '1rem';
+          container.appendChild(spacer);
+        }
       });
     }
 
     function buildOutput(keysMap, textareaId) {
-      const lines = Object.entries(keysMap).map(([k, v]) => `${k}: ${v};`);
-      document.getElementById(textareaId).value = lines.join('\n');
+      const desiredOrder = [
+        '--md-sys-color-primary',
+        '--md-sys-color-secondary',
+        '--md-sys-color-tertiary',
+
+        '--md-sys-color-on-primary',
+        '--md-sys-color-primary-container',
+        '--md-sys-color-on-primary-container',
+
+        '--md-sys-color-surface',
+        '--md-sys-color-on-surface',
+        '--md-sys-color-outline',
+
+        '--md-sys-color-on-secondary',
+        '--md-sys-color-secondary-container',
+        '--md-sys-color-on-secondary-container',
+
+        '--md-sys-color-on-tertiary',
+        '--md-sys-color-tertiary-container',
+        '--md-sys-color-on-tertiary-container',
+
+        '--md-sys-color-neutral'
+      ];
+
+      // Build formatted lines with blank lines every 3 or so groups
+      const lines = desiredOrder.map((key, idx) => {
+        const line = keysMap[key] ? `${key}: ${keysMap[key]};` : null;
+        // Add a blank line after certain rows (based on your pattern)
+        const shouldInsertBreak = [2, 5, 8, 11, 14].includes(idx);
+        return line ? (shouldInsertBreak ? line + '\n' : line) : null;
+      }).filter(Boolean).join('\n');
+
+      document.getElementById(textareaId).value = lines;
     }
 
     window.generatePalette = function generatePalette() {
@@ -504,49 +651,74 @@
         '--md-sys-color-primary': primary,
         '--md-sys-color-secondary': secondary,
         '--md-sys-color-tertiary': tertiary,
+
         '--md-sys-color-on-primary': '#FFFFFF',
+        '--md-sys-color-primary-container': adjustLightness(primary, 0.75),
+        '--md-sys-color-on-primary-container': adjustLightness(primary, 0.05),
+
         '--md-sys-color-surface': adjustLightness(primary, 0.85),
-        '--md-sys-color-primary-container': adjustLightness(primary, 0.55),
-        '--md-sys-color-secondary-container': adjustLightness(primary, 0.70),
-        '--md-sys-color-tertiary-container': adjustLightness(tertiary, 0.55),
-        '--md-sys-color-on-primary-container': adjustLightness(primary, 0.40),
-        '--md-sys-color-neutral': neutral,
-        '--md-sys-color-outline': neutral,
         '--md-sys-color-on-surface': darkerNeutral,
-        '--md-sys-color-neutral-variant': neutralVariant
+        '--md-sys-color-outline': neutral,
+
+        '--md-sys-color-on-secondary': '#FFFFFF',
+        '--md-sys-color-secondary-container': adjustLightness(primary, 0.70),
+        '--md-sys-color-on-secondary-container': adjustLightness(primary, 0.70),
+
+        '--md-sys-color-on-tertiary': '#FFFFFF',
+        '--md-sys-color-tertiary-container': adjustLightness(tertiary, 0.55),
+        '--md-sys-color-on-tertiary-container': adjustLightness(tertiary, 0.55),
+
+        '--md-sys-color-neutral': neutral
       };
 
       const lightKeys = {
         '--md-sys-color-primary': hexFromArgb(light.primary),
         '--md-sys-color-secondary': hexFromArgb(light.secondary),
         '--md-sys-color-tertiary': hexFromArgb(light.tertiary),
+
         '--md-sys-color-on-primary': hexFromArgb(light.onPrimary),
-        '--md-sys-color-surface': hexFromArgb(light.surface),
         '--md-sys-color-primary-container': hexFromArgb(light.primaryContainer),
-        '--md-sys-color-secondary-container': hexFromArgb(light.secondaryContainer),
-        '--md-sys-color-tertiary-container': hexFromArgb(light.tertiaryContainer),
         '--md-sys-color-on-primary-container': hexFromArgb(light.onPrimaryContainer),
-        '--md-sys-color-neutral': hexFromArgb(light.neutral),
-        '--md-sys-color-outline': hexFromArgb(light.outline),
+
+        '--md-sys-color-surface': hexFromArgb(light.surface),
         '--md-sys-color-on-surface': hexFromArgb(light.onSurface),
-        '--md-sys-color-neutral-variant': hexFromArgb(light.neutralVariant)
+        '--md-sys-color-outline': hexFromArgb(light.outline),
+
+        '--md-sys-color-on-secondary': '#FFFFFF',
+        '--md-sys-color-secondary-container': hexFromArgb(light.secondaryContainer),
+        '--md-sys-color-on-secondary-container': hexFromArgb(light.onSecondaryContainer),
+
+        '--md-sys-color-on-tertiary': '#FFFFFF',
+        '--md-sys-color-tertiary-container': hexFromArgb(light.tertiaryContainer),
+        '--md-sys-color-on-tertiary-container': hexFromArgb(light.onTertiaryContainer),
+
+        '--md-sys-color-neutral': hexFromArgb(light.neutral)
       };
 
       const darkKeys = {
         '--md-sys-color-primary': hexFromArgb(dark.primary),
         '--md-sys-color-secondary': hexFromArgb(dark.secondary),
         '--md-sys-color-tertiary': hexFromArgb(dark.tertiary),
+
         '--md-sys-color-on-primary': hexFromArgb(dark.onPrimary),
-        '--md-sys-color-surface': hexFromArgb(dark.surface),
         '--md-sys-color-primary-container': hexFromArgb(dark.primaryContainer),
-        '--md-sys-color-secondary-container': hexFromArgb(dark.secondaryContainer),
-        '--md-sys-color-tertiary-container': hexFromArgb(dark.tertiaryContainer),
         '--md-sys-color-on-primary-container': hexFromArgb(dark.onPrimaryContainer),
-        '--md-sys-color-neutral': hexFromArgb(dark.neutral),
-        '--md-sys-color-outline': hexFromArgb(dark.outline),
+
+        '--md-sys-color-surface': hexFromArgb(dark.surface),
         '--md-sys-color-on-surface': hexFromArgb(dark.onSurface),
-        '--md-sys-color-neutral-variant': hexFromArgb(dark.neutralVariant)
+        '--md-sys-color-outline': hexFromArgb(dark.outline),
+
+        '--md-sys-color-on-secondary': '#FFFFFF',
+        '--md-sys-color-secondary-container': hexFromArgb(dark.secondaryContainer),
+        '--md-sys-color-on-secondary-container': hexFromArgb(dark.onSecondaryContainer),
+
+        '--md-sys-color-on-tertiary': '#FFFFFF',
+        '--md-sys-color-tertiary-container': hexFromArgb(dark.tertiaryContainer),
+        '--md-sys-color-on-tertiary-container': hexFromArgb(dark.onTertiaryContainer),
+
+        '--md-sys-color-neutral': hexFromArgb(dark.neutral)
       };
+
 
       applyColors(document.querySelector('.section.custom'), baseKeys);
       applyColors(document.querySelector('.section.light'), lightKeys);
