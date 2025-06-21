@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Custom HCT vs. Google MD3 Light / Dark Palette Comparator</title>
+  <title>Material Design 3 Schemes based on Seed Color - Light vs Dark Palette Comparator</title>
   <link
     href="https://fonts.googleapis.com/icon?family=Material+Icons"
     rel="stylesheet"
@@ -52,9 +52,11 @@
 
     .input-row input[type="color"] {
       width: 120px;
+      height: 2rem; /* taller box */
       background: var(--input-bg);
       color: var(--text-color);
       border: 1px solid var(--input-border);
+      padding: 0; /* remove padding so color fills */
     }
 
     .input-row input[type="text"] {
@@ -381,10 +383,24 @@
       gap: 0.5rem;
     }
 
+    .scheme-select-wrapper {
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .scheme-select-wrapper select {
+      font-size: 1rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text-color);
+    }
+
   </style>
 </head>
 <body>
-  <h1>Custom HCT vs. Google MD3 Light vs Dark Palette Generator</h1>
+  <h1>Material Design 3 Schemes based on Seed - Light vs Dark Palette Comparator</h1>
 
   <div class="input-row">
     <label for="colorInput">Seed Color:</label>
@@ -395,19 +411,45 @@
   </div>
 
   <div class="palette-container">
-    <div class="section custom">
-      <h2>Custom HCT Palette</h2>
-      <div class="example-card-container"></div>
-      <textarea id="output" readonly></textarea>
-      <div id="swatches" class="swatch-grid"></div>
-    </div>
-    <div class="section light">
+      <div class="section light">
+      <div class="scheme-select-wrapper">
+        <label>
+          Scheme:
+          <select id="lightSchemeSelect">
+            <option value="tonal">Tonal Spot (default)</option>
+            <option value="custom">Custom HCT</option>
+            <option value="expressive">Expressive</option>
+            <option value="vibrant">Vibrant</option>
+            <option value="fidelity">Fidelity</option>
+            <option value="content">Content</option>
+            <option value="monochrome">Monochrome</option>
+            <option value="rainbow">Rainbow</option>
+            <option value="fruit">Fruit Salad</option>
+          </select>
+        </label>
+      </div>
       <h2>Google MD3 “Light” Palette</h2>
       <div class="example-card-container"></div>
       <textarea id="lightOutput" readonly></textarea>
       <div id="lightSwatches" class="swatch-grid"></div>
     </div>
     <div class="section dark">
+      <div class="scheme-select-wrapper">
+        <label>
+          Scheme:
+          <select id="darkSchemeSelect">
+            <option value="tonal">Tonal Spot (default)</option>
+            <option value="custom">Custom HCT</option>
+            <option value="expressive">Expressive</option>
+            <option value="vibrant">Vibrant</option>
+            <option value="fidelity">Fidelity</option>
+            <option value="content">Content</option>
+            <option value="monochrome">Monochrome</option>
+            <option value="rainbow">Rainbow</option>
+            <option value="fruit">Fruit Salad</option>
+          </select>
+        </label>
+      </div>
       <h2>Google MD3 “Dark” Palette</h2>
       <div class="example-card-container"></div>
       <textarea id="darkOutput" readonly></textarea>
@@ -419,8 +461,19 @@
     import {
       argbFromHex,
       hexFromArgb,
-      themeFromSourceColor
+      CorePalette
     } from 'https://unpkg.com/@material/material-color-utilities@0.3.0';
+
+    import { SchemeTonalSpot } from 'https://unpkg.com/@material/material-color-utilities@0.3.0/scheme/scheme_tonal_spot.js';
+    import { SchemeExpressive } from 'https://unpkg.com/@material/material-color-utilities@0.3.0/scheme/scheme_expressive.js';
+    import { SchemeVibrant } from 'https://unpkg.com/@material/material-color-utilities@0.3.0/scheme/scheme_vibrant.js';
+    import { SchemeFidelity } from 'https://unpkg.com/@material/material-color-utilities@0.3.0/scheme/scheme_fidelity.js';
+    import { SchemeContent } from 'https://unpkg.com/@material/material-color-utilities@0.3.0/scheme/scheme_content.js';
+    import { SchemeMonochrome } from 'https://unpkg.com/@material/material-color-utilities@0.3.0/scheme/scheme_monochrome.js';
+    import { SchemeRainbow } from 'https://unpkg.com/@material/material-color-utilities@0.3.0/scheme/scheme_rainbow.js';
+    import { SchemeFruitSalad } from 'https://unpkg.com/@material/material-color-utilities@0.3.0/scheme/scheme_fruit_salad.js';
+    import { Hct } from 'https://unpkg.com/@material/material-color-utilities@0.3.0/hct/hct.js';
+
 
     function hexToRgb(hex) {
       const bigint = parseInt(hex.replace('#', ''), 16);
@@ -431,6 +484,20 @@
       return (
         '#' + [r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('')
       );
+    }
+
+    function getSchemeByName(name, sourceColorHct, isDark) {
+      switch (name) {
+        case 'expressive': return new SchemeExpressive(sourceColorHct, isDark, 0);
+        case 'vibrant': return new SchemeVibrant(sourceColorHct, isDark, 0);
+        case 'fidelity': return new SchemeFidelity(sourceColorHct, isDark, 0);
+        case 'content': return new SchemeContent(sourceColorHct, isDark, 0);
+        case 'monochrome': return new SchemeMonochrome(sourceColorHct, isDark, 0);
+        case 'rainbow': return new SchemeRainbow(sourceColorHct, isDark, 0);
+        case 'fruit': return new SchemeFruitSalad(sourceColorHct, isDark, 0);
+        case 'tonal':
+        default: return new SchemeTonalSpot(sourceColorHct, isDark, 0);
+      }
     }
 
     function adjustLightness(hex, percent) {
@@ -459,6 +526,38 @@
         Math.round((g1 + m) * 255),
         Math.round((b1 + m) * 255)
       );
+    }
+
+    function applyColors(section, colorMap) {
+      Object.entries(colorMap).forEach(([key, val]) =>
+        section.style.setProperty(key, val)
+      );
+    }
+
+    function getThemeKeys(scheme) {
+      return {
+        '--md-sys-color-primary': hexFromArgb(scheme.primary),
+        '--md-sys-color-secondary': hexFromArgb(scheme.secondary),
+        '--md-sys-color-tertiary': hexFromArgb(scheme.tertiary),
+
+        '--md-sys-color-on-primary': hexFromArgb(scheme.onPrimary),
+        '--md-sys-color-primary-container': hexFromArgb(scheme.primaryContainer),
+        '--md-sys-color-on-primary-container': hexFromArgb(scheme.onPrimaryContainer),
+
+        '--md-sys-color-surface': hexFromArgb(scheme.surface),
+        '--md-sys-color-on-surface': hexFromArgb(scheme.onSurface),
+        '--md-sys-color-outline': hexFromArgb(scheme.outline),
+
+        '--md-sys-color-on-secondary': '#FFFFFF',
+        '--md-sys-color-secondary-container': hexFromArgb(scheme.secondaryContainer),
+        '--md-sys-color-on-secondary-container': hexFromArgb(scheme.onSecondaryContainer),
+
+        '--md-sys-color-on-tertiary': '#FFFFFF',
+        '--md-sys-color-tertiary-container': hexFromArgb(scheme.tertiaryContainer),
+        '--md-sys-color-on-tertiary-container': hexFromArgb(scheme.onTertiaryContainer),
+
+        '--md-sys-color-neutral': hexFromArgb(scheme.neutral)
+      };
     }
 
     document.getElementById('colorInput').addEventListener('input', e => {
@@ -626,6 +725,7 @@
       const input = /^#[0-9A-Fa-f]{6}$/.test(hexText)
         ? hexText
         : document.getElementById('colorInput').value;
+
       const { r, g, b } = hexToRgb(input);
       const hue = Math.round(((Math.atan2(Math.sqrt(3)*(g-b), 2*r-g-b)*180/Math.PI)+360)%360);
 
@@ -637,15 +737,7 @@
       const darkerNeutral = generateHCT(hue, 8, 15);
 
       const vividSeed = generateHCT(hue, 70, 70);
-      const theme = themeFromSourceColor(argbFromHex(vividSeed));
-      const light = theme.schemes.light;
-      const dark = theme.schemes.dark;
-
-      const applyColors = (section, colors) => {
-        Object.entries(colors).forEach(([key, val]) =>
-          section.style.setProperty(key, val)
-        );
-      };
+      const sourceColorHct = Hct.fromInt(argbFromHex(vividSeed));
 
       const baseKeys = {
         '--md-sys-color-primary': primary,
@@ -671,71 +763,33 @@
         '--md-sys-color-neutral': neutral
       };
 
-      const lightKeys = {
-        '--md-sys-color-primary': hexFromArgb(light.primary),
-        '--md-sys-color-secondary': hexFromArgb(light.secondary),
-        '--md-sys-color-tertiary': hexFromArgb(light.tertiary),
+      const lightSchemeName = document.getElementById('lightSchemeSelect').value;
+      const darkSchemeName = document.getElementById('darkSchemeSelect').value;
 
-        '--md-sys-color-on-primary': hexFromArgb(light.onPrimary),
-        '--md-sys-color-primary-container': hexFromArgb(light.primaryContainer),
-        '--md-sys-color-on-primary-container': hexFromArgb(light.onPrimaryContainer),
+      const lightKeys = lightSchemeName === 'custom'
+        ? { ...baseKeys }
+        : getThemeKeys(getSchemeByName(lightSchemeName, sourceColorHct, false));
 
-        '--md-sys-color-surface': hexFromArgb(light.surface),
-        '--md-sys-color-on-surface': hexFromArgb(light.onSurface),
-        '--md-sys-color-outline': hexFromArgb(light.outline),
+      const darkKeys = darkSchemeName === 'custom'
+        ? { ...baseKeys }
+        : getThemeKeys(getSchemeByName(darkSchemeName, sourceColorHct, true));
 
-        '--md-sys-color-on-secondary': '#FFFFFF',
-        '--md-sys-color-secondary-container': hexFromArgb(light.secondaryContainer),
-        '--md-sys-color-on-secondary-container': hexFromArgb(light.onSecondaryContainer),
-
-        '--md-sys-color-on-tertiary': '#FFFFFF',
-        '--md-sys-color-tertiary-container': hexFromArgb(light.tertiaryContainer),
-        '--md-sys-color-on-tertiary-container': hexFromArgb(light.onTertiaryContainer),
-
-        '--md-sys-color-neutral': hexFromArgb(light.neutral)
-      };
-
-      const darkKeys = {
-        '--md-sys-color-primary': hexFromArgb(dark.primary),
-        '--md-sys-color-secondary': hexFromArgb(dark.secondary),
-        '--md-sys-color-tertiary': hexFromArgb(dark.tertiary),
-
-        '--md-sys-color-on-primary': hexFromArgb(dark.onPrimary),
-        '--md-sys-color-primary-container': hexFromArgb(dark.primaryContainer),
-        '--md-sys-color-on-primary-container': hexFromArgb(dark.onPrimaryContainer),
-
-        '--md-sys-color-surface': hexFromArgb(dark.surface),
-        '--md-sys-color-on-surface': hexFromArgb(dark.onSurface),
-        '--md-sys-color-outline': hexFromArgb(dark.outline),
-
-        '--md-sys-color-on-secondary': '#FFFFFF',
-        '--md-sys-color-secondary-container': hexFromArgb(dark.secondaryContainer),
-        '--md-sys-color-on-secondary-container': hexFromArgb(dark.onSecondaryContainer),
-
-        '--md-sys-color-on-tertiary': '#FFFFFF',
-        '--md-sys-color-tertiary-container': hexFromArgb(dark.tertiaryContainer),
-        '--md-sys-color-on-tertiary-container': hexFromArgb(dark.onTertiaryContainer),
-
-        '--md-sys-color-neutral': hexFromArgb(dark.neutral)
-      };
-
-
-      applyColors(document.querySelector('.section.custom'), baseKeys);
       applyColors(document.querySelector('.section.light'), lightKeys);
       applyColors(document.querySelector('.section.dark'), darkKeys);
 
-      createExampleCard(document.querySelector('.section.custom'));
       createExampleCard(document.querySelector('.section.light'));
       createExampleCard(document.querySelector('.section.dark'));
 
-      renderSwatches(baseKeys, 'swatches');
       renderSwatches(lightKeys, 'lightSwatches');
       renderSwatches(darkKeys, 'darkSwatches');
 
-      buildOutput(baseKeys, 'output');
       buildOutput(lightKeys, 'lightOutput');
       buildOutput(darkKeys, 'darkOutput');
     };
+
+    document.getElementById('lightSchemeSelect').addEventListener('change', generatePalette);
+    document.getElementById('darkSchemeSelect').addEventListener('change', generatePalette);
+    window.addEventListener('DOMContentLoaded', generatePalette);
   </script>
 </body>
 </html>
