@@ -9,7 +9,7 @@ A one-page tool for generating and fine-tuning color palettes in Google's Materi
 
 ## 🎨 Purpose
 
-This tool allows you to explore and compare how MD3 color logic behaves when generated **manually using HCT rules** versus **automatically via Google's Material Color Utilities (MCU)**.
+This page allows you to explore and compare how MD3 color logic behaves when generated manually using HCT rules versus automatically via Google's Material Color Utilities (MCU).
 
 
 
@@ -55,6 +55,12 @@ Each of these schemes interprets the seed color differently — whether to prese
 
 ---
 
+## ✅ Contrast Assurance
+
+The MCU algorithm adjusts chroma dynamically to ensure each tone passes WCAG contrast ratios, creating **accessible, balanced palettes** by design.
+
+---
+
 ## 🔍 HCT Color Generation Scheme- Local Logic
 
 ### Primary
@@ -73,12 +79,6 @@ Generated using low-chroma HCT colors at tone 40:
 - Includes a very dark neutral for "on-surface" tokens
 
 These serve as grayish supporting tones.
-
----
-
-## ✅ Contrast Assurance
-
-The MCU algorithm adjusts chroma dynamically to ensure each tone passes WCAG contrast ratios, creating **accessible, balanced palettes** by design.
 
 ---
 
