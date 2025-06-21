@@ -37,7 +37,7 @@ Google provides a system-wide mapping table assigning tones to every `md-sys-col
 🧪 Material Design Schemes (MCU Presets)
 Material Design 3 offers multiple dynamic color schemes — each a strategy for how to use your seed color to generate themed palettes. These schemes determine not just tones and chroma, but how neutral or expressive the result feels.
 
-### 🔁 Available Schemes
+#### 🔁 Available Schemes
 
 | **Scheme Name** | **Description** |
 |-----------------|-----------------|
@@ -52,7 +52,7 @@ Material Design 3 offers multiple dynamic color schemes — each a strategy for 
 | `Fruit Salad`   | Another fun, thematic option with playful chromatic shifts (as the name implies). |
 
 
-Each of these schemes interprets the seed color differently — whether to preserve hue fidelity, amp up saturation, reduce visual noise, or add vibrancy.
+Each of these schemes interprets the seed color differently — whether to preserve hue fidelity, amp up saturation, reduce visual noise, or add vibrancy
 ---
 
 ## 🔍 HCT Color Generation Scheme- Local Logic
