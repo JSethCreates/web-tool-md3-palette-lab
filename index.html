@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Custom HCT vs. Google MD3 Light vs Dark Palette Generator</title>
+  <title>Custom HCT vs. Google MD3 Light / Dark Palette Comparator</title>
   <style>
     /* ====== COLOR VARIABLES ====== */
     :root {
@@ -350,7 +350,7 @@
   <h1>Custom HCT vs. Google MD3 Light vs Dark Palette Generator</h1>
 
   <div class="input-row">
-    <label for="colorInput">Pick Color:</label>
+    <label for="colorInput">Seed Color:</label>
     <input type="color" id="colorInput" value="#6750A4" />
     <label for="hexInput">or Enter Hex:</label>
     <input type="text" id="hexInput" placeholder="#RRGGBB" value="#6750A4" />
@@ -589,8 +589,6 @@ window.generatePalette = function generatePalette() {
 
 	  '--md-sys-color-surface',
 	  '--md-sys-color-on-surface',
-	  '',
-
 	  '--md-sys-color-outline',
 	  '',
 
@@ -681,10 +679,10 @@ window.generatePalette = function generatePalette() {
   }
 
   function buildOutput(keysMap, textareaId) {
-    const lines = orderedKeys.map((k) => (k ? `${k}: ${keysMap[k]};` : ''));
-    const wrapped = [':root {', ...lines, '}'].join('\n');
-    document.getElementById(textareaId).value = wrapped;
-  }
+  const lines = orderedKeys.map((k) => (k ? `${k}: ${keysMap[k]};` : ''));
+  const wrapped = lines.join('\n');
+  document.getElementById(textareaId).value = wrapped;
+}
 
   renderSwatches(hctKeys, 'swatches');
   buildOutput(hctKeys, 'output');
