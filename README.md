@@ -78,4 +78,4 @@ Shifts the hue by **+60°** (moving one “segment” on the color wheel), with 
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [WTFPL – Version 2](LICENSE).
