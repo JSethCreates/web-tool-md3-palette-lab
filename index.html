@@ -713,7 +713,10 @@
 
       // Build formatted lines with blank lines every 3 or so groups
       const lines = desiredOrder.map((key, idx) => {
-        const line = keysMap[key] ? `${key}: ${keysMap[key]}\t!important;` : null;
+        const maxKeyLength = Math.max(...desiredOrder.map(k => k.length));
+        const line = keysMap[key]
+          ? `${key}:`.padEnd(maxKeyLength + 2) + `${keysMap[key]};`.padEnd(20) + `!important;`
+          : null;
         // Add a blank line after certain rows (based on your pattern)
         const shouldInsertBreak = [2, 5, 8, 11, 14].includes(idx);
         return line ? (shouldInsertBreak ? line + '\n' : line) : null;
