@@ -410,6 +410,8 @@
     <button onclick="generatePalette()">Generate</button>
   </div>
 
+  <p style="text-align:center; margin-bottom: 2rem;">Select a seed color above and press generate. Select a scheme below to adjust which palette is returned.</p>
+
   <div class="palette-container">
       <div class="section light">
       <div class="scheme-select-wrapper">
@@ -711,7 +713,7 @@
 
       // Build formatted lines with blank lines every 3 or so groups
       const lines = desiredOrder.map((key, idx) => {
-        const line = keysMap[key] ? `${key}: ${keysMap[key]};` : null;
+        const line = keysMap[key] ? `${key}: ${keysMap[key]}\t\t!important;` : null;
         // Add a blank line after certain rows (based on your pattern)
         const shouldInsertBreak = [2, 5, 8, 11, 14].includes(idx);
         return line ? (shouldInsertBreak ? line + '\n' : line) : null;
